@@ -1,0 +1,1057 @@
+"district","id","year","resp","party","sasc","gender","age","religion"
+1,3322,1983,7,"labour","lower working","male","65","protestant"
+1,3322,1984,3,"labour","lower working","male","65","protestant"
+1,3322,1985,4,"labour","lower working","male","65","protestant"
+1,3322,1986,7,"labour","lower working","male","65","protestant"
+1,3325,1983,3,"none","lower working","female","31","protestant"
+1,3325,1984,4,"conservative","middle","female","31","protestant"
+1,3325,1985,6,"labour","lower working","female","31","protestant"
+1,3325,1986,3,"other","middle","female","31","protestant"
+2,3372,1983,7,"none","middle","male","33","none"
+2,3372,1984,7,"other","upper working","male","33","none"
+2,3372,1985,7,"Liberal/SDP/Alliance","lower working","male","33","none"
+2,3372,1986,7,"Liberal/SDP/Alliance","upper working","male","33","none"
+2,3374,1983,7,"none","upper working","female","43","none"
+2,3374,1984,7,"conservative","upper working","female","43","none"
+2,3374,1985,7,"Liberal/SDP/Alliance","upper working","female","43","none"
+2,3374,1986,7,"Liberal/SDP/Alliance","upper working","female","43","none"
+2,3378,1983,3,"conservative","middle","male","48","protestant"
+2,3378,1984,3,"conservative","middle","male","48","protestant"
+2,3378,1985,3,"conservative","middle","male","48","protestant"
+2,3378,1986,3,"conservative","middle","male","48","protestant"
+2,3386,1983,6,"labour","lower working","male","55","none"
+2,3386,1984,5,"labour","lower working","male","55","none"
+2,3386,1985,7,"labour","lower working","male","55","none"
+2,3386,1986,7,"labour","lower working","male","55","none"
+2,3388,1983,7,"conservative","upper working","male","59","protestant"
+2,3388,1984,3,"Liberal/SDP/Alliance","upper working","male","59","protestant"
+2,3388,1985,6,"Liberal/SDP/Alliance","upper working","male","59","protestant"
+2,3388,1986,6,"Liberal/SDP/Alliance","lower working","male","59","protestant"
+3,2164,1983,7,"conservative","lower working","female","45","protestant"
+3,2164,1984,7,"other","lower working","female","45","protestant"
+3,2164,1985,7,"conservative","lower working","female","45","protestant"
+3,2164,1986,7,"Liberal/SDP/Alliance","lower working","female","45","protestant"
+3,2173,1983,7,"labour","upper working","female","63","protestant"
+3,2173,1984,7,"labour","lower working","female","63","protestant"
+3,2173,1985,6,"labour","middle","female","63","protestant"
+3,2173,1986,7,"labour","middle","female","63","protestant"
+3,2182,1983,4,"conservative","upper working","female","24","other"
+3,2182,1984,5,"conservative","upper working","female","24","other"
+3,2182,1985,6,"conservative","lower working","female","24","other"
+3,2182,1986,7,"conservative","lower working","female","24","other"
+4,NA,NA,39,"conservative","lower working","female","3",NA
+4,NA,NA,39,"labour",NA,"female","3",NA
+4,NA,NA,39,"Liberal/SDP/Alliance","lower working","female","3",NA
+4,NA,NA,39,"other","lower working","female","3",NA
+4,NA,NA,46,"conservative","lower working","male","2",NA
+4,NA,NA,46,"labour","lower working","male","2",NA
+4,NA,NA,46,"Liberal/SDP/Alliance",NA,"male","2",NA
+4,NA,NA,46,"other",NA,"male","2",NA
+4,NA,NA,48,"conservative",NA,"female","3",NA
+4,NA,NA,48,"labour",NA,"female","3",NA
+4,NA,NA,48,"Liberal/SDP/Alliance","lower working","female","3",NA
+4,NA,NA,48,"other",NA,"female","3",NA
+4,NA,NA,55,"conservative",NA,"male","3",NA
+4,NA,NA,55,"labour",NA,"female","3",NA
+4,NA,NA,55,"Liberal/SDP/Alliance",NA,"female","3",NA
+4,NA,NA,55,"other",NA,"female","2",NA
+4,NA,NA,56,"conservative",NA,"female","3",NA
+4,NA,NA,56,"labour",NA,"female","2",NA
+4,NA,NA,56,"Liberal/SDP/Alliance",NA,"female","2",NA
+4,NA,NA,56,"other",NA,"female","2",NA
+4,NA,NA,60,"conservative",NA,"male","2",NA
+4,NA,NA,60,"labour","lower working","male","1",NA
+4,NA,NA,60,"Liberal/SDP/Alliance",NA,"male","1",NA
+4,NA,NA,60,"other",NA,"male","2",NA
+5,NA,2082,1,"none","upper working","female","1",NA
+5,NA,2082,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+5,NA,2082,3,"Liberal/SDP/Alliance","upper working","female","1",NA
+5,NA,2082,4,"Liberal/SDP/Alliance","upper working","female","1",NA
+5,NA,2086,1,NA,"upper working","female","2",NA
+5,NA,2086,2,NA,"upper working","female","2",NA
+5,NA,2086,3,NA,"upper working","female","2",NA
+5,NA,2086,4,NA,"upper working","female","2",NA
+5,NA,2090,1,"conservative","lower working","female","2",NA
+5,NA,2090,2,"Liberal/SDP/Alliance","lower working","female","2",NA
+5,NA,2090,3,"Liberal/SDP/Alliance","lower working","female","2",NA
+5,NA,2090,4,"Liberal/SDP/Alliance","lower working","female","2",NA
+5,NA,2098,1,NA,"upper working","female","2",NA
+5,NA,2098,2,NA,"upper working","female","2",NA
+5,NA,2098,3,NA,"upper working","female","2",NA
+5,NA,2098,4,NA,"upper working","female","2",NA
+6,NA,2134,1,"conservative",NA,"female","1",NA
+6,NA,2134,2,"Liberal/SDP/Alliance",NA,"female","1",NA
+6,NA,2134,3,"none",NA,"female","1",NA
+6,NA,2134,4,"Liberal/SDP/Alliance",NA,"female","1",NA
+6,NA,2137,1,"other","middle","female","1",NA
+6,NA,2137,2,"other","middle","female","1",NA
+6,NA,2137,3,NA,"middle","female","1",NA
+6,NA,2137,4,"none","middle","female","1",NA
+7,NA,2193,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+7,NA,2193,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+7,NA,2193,3,"Liberal/SDP/Alliance","lower working","female","2",NA
+7,NA,2193,4,"Liberal/SDP/Alliance","lower working","female","2",NA
+7,NA,2194,1,"conservative","upper working","female","1",NA
+7,NA,2194,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+7,NA,2194,3,"labour",NA,"female","1",NA
+7,NA,2194,4,"conservative",NA,"female","1",NA
+7,NA,2197,1,NA,"upper working","female","1",NA
+7,NA,2197,2,NA,"upper working","female","1",NA
+7,NA,2197,3,NA,"upper working","female","1",NA
+7,NA,2197,4,NA,"upper working","female","1",NA
+7,NA,2198,1,"none","upper working","male","2",NA
+7,NA,2198,2,"Liberal/SDP/Alliance",NA,"female","2",NA
+7,NA,2198,3,NA,"upper working","female","2",NA
+7,NA,2198,4,NA,"upper working","female","2",NA
+7,NA,2205,1,NA,"middle","female","1",NA
+7,NA,2205,2,"Liberal/SDP/Alliance","middle","female","1",NA
+7,NA,2205,3,NA,"middle","female","1",NA
+7,NA,2205,4,NA,"middle","female","1",NA
+7,NA,2206,1,NA,"lower working","female","2",NA
+7,NA,2206,2,"none","upper working","female","2",NA
+7,NA,2206,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+7,NA,2206,4,NA,"upper working","female","2",NA
+7,NA,2220,1,"none","upper working","female","2",NA
+7,NA,2220,2,"none","upper working","female","2",NA
+7,NA,2220,3,"other","upper working","female","2",NA
+7,NA,2220,4,"none","lower working","female","2",NA
+8,NA,2254,1,"none","upper working","female","2",NA
+8,NA,2254,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+8,NA,2254,3,"Liberal/SDP/Alliance","upper working","male","2",NA
+8,NA,2254,4,"Liberal/SDP/Alliance","upper working","female","2",NA
+8,NA,2256,1,NA,"middle","female","1",NA
+8,NA,2256,2,"none","middle","female","1",NA
+8,NA,2256,3,NA,"middle","female","1",NA
+8,NA,2256,4,NA,"middle","female","1",NA
+8,NA,2260,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+8,NA,2260,2,"other","upper working","female","2",NA
+8,NA,2260,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+8,NA,2260,4,"Liberal/SDP/Alliance","upper working","female","2",NA
+8,NA,2265,1,NA,"upper working","male","1",NA
+8,NA,2265,2,NA,"upper working","female","1",NA
+8,NA,2265,3,NA,"upper working","female","1",NA
+8,NA,2265,4,"none","upper working","female","1",NA
+8,NA,2268,1,NA,"middle","female","2",NA
+8,NA,2268,2,"other","middle","female","2",NA
+8,NA,2268,3,NA,"middle","female","2",NA
+8,NA,2268,4,"Liberal/SDP/Alliance","middle","female","2",NA
+8,NA,2270,1,"Liberal/SDP/Alliance","upper working","female","1",NA
+8,NA,2270,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+8,NA,2270,3,"Liberal/SDP/Alliance",NA,"female","1",NA
+8,NA,2270,4,"Liberal/SDP/Alliance","upper working","female","1",NA
+8,NA,2277,1,"none","middle","female","1",NA
+8,NA,2277,2,"none","middle","male","1",NA
+8,NA,2277,3,"other","middle","male","1",NA
+8,NA,2277,4,"Liberal/SDP/Alliance","middle","female","1",NA
+8,NA,2278,1,NA,"middle","male","1",NA
+8,NA,2278,2,NA,"middle","male","1",NA
+8,NA,2278,3,"conservative","middle","female","1",NA
+8,NA,2278,4,NA,"middle","male","1",NA
+8,NA,2280,1,"none","upper working","female","2",NA
+8,NA,2280,2,"other","upper working","female","2",NA
+8,NA,2280,3,NA,"upper working","female","2",NA
+8,NA,2280,4,"none","upper working","female","2",NA
+9,NA,2330,1,NA,"middle","female","1",NA
+9,NA,2330,2,"other","middle","female","1",NA
+9,NA,2330,3,NA,"middle","female","1",NA
+9,NA,2330,4,NA,"lower working","female","1",NA
+9,NA,2341,1,"other","upper working","female","2",NA
+9,NA,2341,2,"other","upper working","female","2",NA
+9,NA,2341,3,"labour","upper working","female","2",NA
+9,NA,2341,4,"labour","upper working","female","2",NA
+9,NA,2342,1,"Liberal/SDP/Alliance","upper working","female","1",NA
+9,NA,2342,2,"labour","upper working","male","1",NA
+9,NA,2342,3,"none","upper working","female","1",NA
+9,NA,2342,4,NA,"upper working","female","1",NA
+NA,396,1983,4,"other","lower working","female","21","none"
+NA,396,1984,3,"conservative","lower working","female","21","none"
+NA,396,1985,7,"labour","lower working","female","21","none"
+NA,396,1986,4,"labour","lower working","female","21","none"
+NA,411,1983,5,"labour","lower working","female","23","catholic"
+NA,411,1984,3,"labour","lower working","female","23","catholic"
+NA,411,1985,3,"labour","lower working","female","23","catholic"
+NA,411,1986,3,"labour","lower working","female","23","catholic"
+NA,412,1983,3,"labour","lower working","male","20","catholic"
+NA,412,1984,4,"labour","lower working","male","20","catholic"
+NA,412,1985,3,"labour","lower working","male","20","catholic"
+NA,412,1986,7,"labour","lower working","male","20","catholic"
+NA,414,1983,3,"other","middle","male","25","none"
+NA,414,1984,3,"Liberal/SDP/Alliance","middle","male","25","none"
+NA,414,1985,3,"other","lower working","male","25","none"
+NA,414,1986,2,"other","lower working","male","25","none"
+NA,452,1983,3,"conservative","middle","female","67","other"
+NA,452,1984,2,"conservative","upper working","female","67","other"
+NA,452,1985,2,"conservative","lower working","female","67","other"
+NA,452,1986,2,"conservative","upper working","female","67","other"
+NA,455,1983,6,"Liberal/SDP/Alliance","middle","female","73","other"
+NA,455,1984,7,"labour","middle","female","73","other"
+NA,455,1985,5,"Liberal/SDP/Alliance","middle","female","73","other"
+NA,455,1986,5,"labour","middle","female","73","other"
+NA,458,1983,5,"labour","lower working","female","44","other"
+NA,458,1984,3,"labour","lower working","female","44","other"
+NA,458,1985,3,"labour","lower working","female","44","other"
+NA,458,1986,3,"labour","lower working","female","44","other"
+NA,463,1983,3,"labour","middle","male","57","other"
+NA,463,1984,4,"labour","upper working","male","57","other"
+NA,463,1985,2,"labour","upper working","male","57","other"
+NA,463,1986,3,"Liberal/SDP/Alliance","upper working","male","57","other"
+NA,466,1983,7,"conservative","middle","male","26","other"
+NA,466,1984,7,"Liberal/SDP/Alliance","middle","male","26","other"
+NA,466,1985,3,"conservative","middle","male","26","other"
+NA,466,1986,6,"conservative","middle","male","26","other"
+NA,470,1983,7,"labour","upper working","male","28","none"
+NA,470,1984,7,"labour","middle","male","28","none"
+NA,470,1985,7,"labour","middle","male","28","none"
+NA,470,1986,6,"labour","middle","male","28","none"
+NA,471,1983,6,"conservative","middle","male","35","other"
+NA,471,1984,6,"conservative","middle","male","35","other"
+NA,471,1985,7,"conservative","middle","male","35","other"
+NA,471,1986,7,"conservative","middle","male","35","other"
+NA,522,1983,6,"labour","upper working","female","33","none"
+NA,522,1984,3,"labour","lower working","female","33","none"
+NA,522,1985,4,"labour","lower working","female","33","none"
+NA,522,1986,7,"labour","lower working","female","33","none"
+NA,530,1983,4,"none","lower working","female","76","other"
+NA,530,1984,2,"other","lower working","female","76","other"
+NA,530,1985,4,"other","lower working","female","76","other"
+NA,530,1986,4,"other","lower working","female","76","other"
+NA,540,1983,4,"none","lower working","male","50","protestant"
+NA,540,1984,3,"none","upper working","male","50","protestant"
+NA,540,1985,7,"labour","lower working","male","50","protestant"
+NA,540,1986,7,"other","lower working","male","50","protestant"
+NA,616,1983,6,"labour","upper working","male","34","none"
+NA,616,1984,7,"labour","upper working","male","34","none"
+NA,616,1985,7,"labour","upper working","male","34","none"
+NA,616,1986,7,"labour","upper working","male","34","none"
+NA,618,1983,5,"Liberal/SDP/Alliance","lower working","female","34","catholic"
+NA,618,1984,7,"labour","lower working","female","34","catholic"
+NA,618,1985,7,"conservative","lower working","female","34","catholic"
+NA,618,1986,7,"Liberal/SDP/Alliance","lower working","female","34","catholic"
+NA,626,1983,6,"conservative","lower working","male","38","protestant"
+NA,626,1984,3,"conservative","lower working","male","38","protestant"
+NA,626,1985,4,"conservative","lower working","male","38","protestant"
+NA,626,1986,6,"conservative","lower working","male","38","protestant"
+NA,628,1983,3,"labour","lower working","female","25","protestant"
+NA,628,1984,2,"labour","lower working","female","25","protestant"
+NA,628,1985,3,"labour","lower working","female","25","protestant"
+NA,628,1986,3,"labour","lower working","female","25","protestant"
+NA,661,1983,5,"labour","lower working","male","50","protestant"
+NA,661,1984,4,"labour","lower working","male","50","protestant"
+NA,661,1985,6,"labour","lower working","male","50","protestant"
+NA,661,1986,5,"labour","lower working","male","50","protestant"
+NA,662,1983,3,"labour","upper working","male","19","catholic"
+NA,662,1984,2,"labour","upper working","male","19","catholic"
+NA,662,1985,3,"labour","upper working","male","19","catholic"
+NA,662,1986,1,"labour","lower working","male","19","catholic"
+NA,669,1983,2,"Liberal/SDP/Alliance","lower working","female","32","other"
+NA,669,1984,1,"labour","upper working","female","32","other"
+NA,669,1985,1,"Liberal/SDP/Alliance","upper working","female","32","other"
+NA,669,1986,1,"Liberal/SDP/Alliance","lower working","female","32","other"
+NA,676,1983,4,"Liberal/SDP/Alliance","lower working","female","42","protestant"
+NA,676,1984,2,"Liberal/SDP/Alliance","lower working","female","42","protestant"
+NA,676,1985,4,"labour","lower working","female","42","protestant"
+NA,676,1986,4,"other","lower working","female","42","protestant"
+NA,677,1983,3,"conservative","upper working","male","21","none"
+NA,677,1984,3,"conservative","upper working","male","21","none"
+NA,677,1985,2,"conservative","upper working","male","21","none"
+NA,677,1986,3,"conservative","upper working","male","21","none"
+NA,682,1983,3,"conservative","lower working","male","71","protestant"
+NA,682,1984,3,"conservative","lower working","male","71","protestant"
+NA,682,1985,4,"conservative","lower working","male","71","protestant"
+NA,682,1986,7,"conservative","lower working","male","71","protestant"
+NA,686,1983,7,"conservative","middle","male","19","none"
+NA,686,1984,7,"conservative","middle","male","19","none"
+NA,686,1985,6,"conservative","middle","male","19","none"
+NA,686,1986,6,"conservative","middle","male","19","none"
+NA,688,1983,6,"Liberal/SDP/Alliance","middle","male","49","none"
+NA,688,1984,7,"Liberal/SDP/Alliance","middle","male","49","none"
+NA,688,1985,6,"Liberal/SDP/Alliance","middle","male","49","none"
+NA,688,1986,7,"Liberal/SDP/Alliance","middle","male","49","none"
+NA,689,1983,5,"conservative","lower working","female","37","none"
+NA,689,1984,5,"labour","lower working","female","37","none"
+NA,689,1985,5,"labour","lower working","female","37","none"
+NA,689,1986,4,"labour","lower working","female","37","none"
+NA,729,1983,4,"labour","lower working","female","45","protestant"
+NA,729,1984,4,"labour","lower working","female","45","protestant"
+NA,729,1985,7,"labour","lower working","female","45","protestant"
+NA,729,1986,4,"labour","lower working","female","45","protestant"
+NA,732,1983,5,"none","upper working","male","23","none"
+NA,732,1984,4,"conservative","upper working","male","23","none"
+NA,732,1985,7,"conservative","upper working","male","23","none"
+NA,732,1986,5,"conservative","upper working","male","23","none"
+NA,736,1983,4,"labour","upper working","male","59","none"
+NA,736,1984,3,"labour","lower working","male","59","none"
+NA,736,1985,5,"labour","lower working","male","59","none"
+NA,736,1986,4,"labour","lower working","male","59","none"
+NA,742,1983,5,"none","middle","female","23","none"
+NA,742,1984,3,"labour","middle","female","23","none"
+NA,742,1985,5,"labour","middle","female","23","none"
+NA,742,1986,3,"labour","middle","female","23","none"
+NA,781,1983,4,"conservative","lower working","male","42","none"
+NA,781,1984,3,"conservative","lower working","male","42","none"
+NA,781,1985,3,"conservative","lower working","male","42","none"
+NA,781,1986,3,"conservative","lower working","male","42","none"
+NA,789,1983,3,"Liberal/SDP/Alliance","lower working","male","45","none"
+NA,789,1984,3,"Liberal/SDP/Alliance","lower working","male","45","none"
+NA,789,1985,4,"labour","lower working","male","45","none"
+NA,789,1986,5,"Liberal/SDP/Alliance","lower working","male","45","none"
+NA,850,1983,5,"conservative","upper working","male","80","protestant"
+NA,850,1984,4,"conservative","lower working","male","80","protestant"
+NA,850,1985,0,"conservative","middle","male","80","protestant"
+NA,850,1986,7,"conservative","middle","male","80","protestant"
+NA,857,1983,7,"none","lower working","male","49","none"
+NA,857,1984,7,"labour","lower working","male","49","none"
+NA,857,1985,7,"labour","lower working","male","49","none"
+NA,857,1986,7,"labour","lower working","male","49","none"
+NA,869,1983,5,"conservative","upper working","female","65","protestant"
+NA,869,1984,7,"conservative","upper working","female","65","protestant"
+NA,869,1985,4,"conservative","upper working","female","65","protestant"
+NA,869,1986,6,"conservative","upper working","female","65","protestant"
+NA,910,1983,6,"labour","lower working","female","61","protestant"
+NA,910,1984,4,"labour","lower working","female","61","protestant"
+NA,910,1985,7,"labour","lower working","female","61","protestant"
+NA,910,1986,7,"labour","lower working","female","61","protestant"
+NA,916,1983,6,"labour","lower working","male","30","none"
+NA,916,1984,7,"labour","lower working","male","30","none"
+NA,916,1985,4,"labour","lower working","male","30","none"
+NA,916,1986,6,"conservative","lower working","male","30","none"
+NA,922,1983,4,"labour","upper working","female","37","other"
+NA,922,1984,3,"labour","lower working","female","37","other"
+NA,922,1985,3,"labour","lower working","female","37","other"
+NA,922,1986,3,"labour","lower working","female","37","other"
+NA,929,1983,2,"labour","lower working","male","55","catholic"
+NA,929,1984,3,"labour","lower working","male","55","catholic"
+NA,929,1985,3,"labour","lower working","male","55","catholic"
+NA,929,1986,3,"labour","lower working","male","55","catholic"
+1024,1,1989,2,"labour","upper working","female","3",NA
+1024,2,1989,2,"labour","upper working","female","3",NA
+1024,3,1989,2,"conservative","upper working","female","3",NA
+1024,4,1989,2,"conservative","upper working","female","3",NA
+1029,1,1988,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1029,2,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1029,3,1986,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1029,4,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1034,1,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1034,2,1989,1,"labour","upper working","female","2",NA
+1034,3,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1034,4,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1036,1,1989,3,"labour","upper working","female","2",NA
+1036,2,1989,2,"labour","upper working","female","2",NA
+1036,3,1989,2,"labour","upper working","female","2",NA
+1036,4,1989,2,"labour","upper working","female","2",NA
+1040,1,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1040,2,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1040,3,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1040,4,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1041,1,1985,1,"conservative","upper working","female","2",NA
+1041,2,1986,1,"conservative","upper working","female","2",NA
+1041,3,1985,1,"conservative","upper working","female","2",NA
+1041,4,1985,1,"conservative","upper working","female","2",NA
+1046,1,1988,3,"conservative","upper working","female","3",NA
+1046,2,1985,3,"conservative","upper working","female","3",NA
+1046,3,1989,3,"conservative","upper working","female","3",NA
+1046,4,1988,3,"Liberal/SDP/Alliance","upper working","female","3",NA
+1050,1,1987,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1050,2,1986,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1050,3,1987,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1050,4,1986,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1082,1,1984,3,"labour","upper working","female","1",NA
+1082,2,1983,3,"labour","upper working","female","1",NA
+1082,3,1983,2,"labour","upper working","female","1",NA
+1082,4,1984,2,"labour","upper working","female","1",NA
+1090,1,1987,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1090,2,1985,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1090,3,1986,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1090,4,1985,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1093,1,1989,3,"labour","upper working","female","4",NA
+1093,2,1988,4,"Liberal/SDP/Alliance","upper working","female","4",NA
+1093,3,1988,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1093,4,1989,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1096,1,1989,2,"conservative","upper working","female","4",NA
+1096,2,1988,2,"conservative","upper working","female","4",NA
+1096,3,1989,2,"conservative","upper working","female","4",NA
+1096,4,1989,3,"conservative","upper working","female","4",NA
+1097,1,1989,3,"labour","upper working","female","4",NA
+1097,2,1989,3,"conservative","upper working","female","4",NA
+1097,3,1989,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1097,4,1989,4,"Liberal/SDP/Alliance","upper working","female","4",NA
+1100,1,1986,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1100,2,1985,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1100,3,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1100,4,1986,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1102,1,1986,2,"labour","upper working","female","2",NA
+1102,2,1988,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1102,3,1984,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1102,4,1987,3,"labour","upper working","female","2",NA
+1105,1,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1105,2,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1105,3,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1105,4,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1106,1,1986,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1106,2,1985,2,"labour","upper working","female","2",NA
+1106,3,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1106,4,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1144,1,1984,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1144,2,1985,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1144,3,1987,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1144,4,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1153,1,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1153,2,1987,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1153,3,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1153,4,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1154,1,1989,1,"labour","upper working","female","2",NA
+1154,2,1989,1,"labour","upper working","female","2",NA
+1154,3,1989,1,"labour","upper working","female","2",NA
+1154,4,1989,1,"conservative","upper working","female","2",NA
+1204,1,1988,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1204,2,1987,3,"labour","upper working","female","2",NA
+1204,3,1988,3,"labour","upper working","female","2",NA
+1204,4,1988,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1208,1,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1208,2,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1208,3,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1208,4,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1216,1,1987,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1216,2,1987,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1216,3,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1216,4,1989,1,"conservative","upper working","female","2",NA
+1225,1,1989,3,"Liberal/SDP/Alliance","upper working","female","3",NA
+1225,2,1989,3,"Liberal/SDP/Alliance","upper working","female","3",NA
+1225,3,1988,3,"Liberal/SDP/Alliance","upper working","female","3",NA
+1225,4,1988,3,"Liberal/SDP/Alliance","upper working","female","3",NA
+1228,1,1989,2,"conservative","upper working","female","2",NA
+1228,2,1989,2,"conservative","upper working","female","2",NA
+1228,3,1989,2,"conservative","upper working","female","2",NA
+1228,4,1989,2,"conservative","upper working","female","2",NA
+1278,1,1985,2,"labour","upper working","female","2",NA
+1278,2,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1278,3,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1278,4,1988,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1324,1,1983,5,"Liberal/SDP/Alliance","upper working","female","2",NA
+1324,2,1983,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1324,3,1987,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1324,4,1985,5,"Liberal/SDP/Alliance","upper working","female","2",NA
+1326,1,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1326,2,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1326,3,1986,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1326,4,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1337,1,1988,5,"Liberal/SDP/Alliance","middle","female","4",NA
+1337,2,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1337,3,1982,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1337,4,1987,3,"Liberal/SDP/Alliance","middle","female","4",NA
+1348,1,1988,2,"labour","upper working","female","3",NA
+1348,2,1986,2,"conservative","upper working","female","3",NA
+1348,3,1986,2,"conservative","upper working","female","3",NA
+1348,4,1987,2,"labour","upper working","female","3",NA
+1382,1,1985,1,"conservative","middle","female","2",NA
+1382,2,1985,1,"conservative","middle","female","2",NA
+1382,3,1985,1,"conservative","middle","female","2",NA
+1382,4,1985,1,"conservative","middle","female","2",NA
+1388,1,1986,1,"conservative","upper working","female","2",NA
+1388,2,1985,1,"conservative","upper working","female","2",NA
+1388,3,1987,1,"conservative","upper working","female","2",NA
+1388,4,1988,1,"conservative","upper working","female","2",NA
+1393,1,1986,3,"conservative","upper working","female","2",NA
+1393,2,1985,3,"conservative","upper working","female","2",NA
+1393,3,1986,3,"conservative","upper working","female","2",NA
+1393,4,1988,3,"conservative","upper working","female","2",NA
+1394,1,1989,1,"labour","middle","female","2",NA
+1394,2,1989,1,"labour","middle","female","2",NA
+1394,3,1989,1,"labour","middle","female","2",NA
+1394,4,1989,1,"labour","middle","female","2",NA
+1450,1,1987,1,"labour","upper working","female","2",NA
+1450,2,1987,1,"labour","upper working","female","2",NA
+1450,3,1987,1,"labour","upper working","female","2",NA
+1450,4,1989,1,"labour","upper working","female","2",NA
+1453,1,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1453,2,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1453,3,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1453,4,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1460,1,1985,2,"labour","middle","female","4",NA
+1460,2,1985,2,"labour","middle","female","4",NA
+1460,3,1985,2,"labour","middle","female","4",NA
+1460,4,1985,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1462,1,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1462,2,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1462,3,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1462,4,1984,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+NA,548,1983,6,"labour","lower working","male","47","other"
+NA,548,1984,3,"labour","lower working","male","47","other"
+NA,548,1985,6,"labour","lower working","male","47","other"
+NA,548,1986,7,"labour","lower working","male","47","other"
+3061,1,1987,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+3061,2,1985,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+3061,3,1985,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+3061,4,1985,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+3065,1,1987,1,"labour","middle","female","2",NA
+3065,2,1987,1,"Liberal/SDP/Alliance","middle","female","2",NA
+3065,3,1989,1,"labour","middle","female","2",NA
+3065,4,1989,1,"labour","middle","female","2",NA
+3077,1,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3077,2,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3077,3,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3077,4,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3078,1,1986,5,"Liberal/SDP/Alliance","upper working","female","4",NA
+3078,2,1986,4,"labour","upper working","female","4",NA
+3078,3,1987,4,"Liberal/SDP/Alliance","upper working","female","4",NA
+3078,4,1989,4,"Liberal/SDP/Alliance","upper working","female","4",NA
+3080,1,1985,1,"conservative","upper working","female","4",NA
+3080,2,1985,1,"conservative","upper working","female","4",NA
+3080,3,1985,1,"labour","upper working","female","4",NA
+3080,4,1985,1,"labour","upper working","female","4",NA
+3081,1,1989,2,"labour","middle","female","4",NA
+3081,2,1984,2,"Liberal/SDP/Alliance","middle","female","4",NA
+3081,3,1987,2,"conservative","middle","female","4",NA
+3081,4,1986,3,"labour","middle","female","4",NA
+3088,1,1988,3,"Liberal/SDP/Alliance","upper working","female","1",NA
+3088,2,1986,3,"labour","upper working","female","1",NA
+3088,3,1989,3,"labour","upper working","female","1",NA
+3088,4,1988,3,"Liberal/SDP/Alliance","upper working","female","1",NA
+3090,1,1989,1,"labour","upper working","female","4",NA
+3090,2,1989,1,"labour","upper working","female","4",NA
+3090,3,1989,1,"labour","upper working","female","4",NA
+3090,4,1989,1,"labour","upper working","female","4",NA
+1534,1,1985,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1534,2,1988,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1534,3,1989,4,"Liberal/SDP/Alliance","middle","female","4",NA
+1534,4,1989,4,"labour","middle","female","4",NA
+1547,1,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1547,2,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1547,3,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1547,4,1987,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+1560,1,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1560,2,1987,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1560,3,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1560,4,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1591,1,1986,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1591,2,1985,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1591,3,1984,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1591,4,1984,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+1594,1,1989,3,"labour","upper working","female","4",NA
+1594,2,1989,3,"conservative","upper working","female","4",NA
+1594,3,1989,3,"conservative","upper working","female","4",NA
+1594,4,1989,3,"conservative","upper working","female","4",NA
+1600,1,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+1600,2,1986,1,"labour","middle","female","2",NA
+1600,3,1987,1,"labour","middle","female","2",NA
+1600,4,1987,1,"labour","middle","female","2",NA
+1602,1,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1602,2,1988,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1602,3,1989,1,"labour","middle","female","4",NA
+1602,4,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1607,1,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1607,2,1985,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1607,3,1985,2,"labour","middle","female","4",NA
+1607,4,1988,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1608,1,1989,4,"Liberal/SDP/Alliance","middle","female","4",NA
+1608,2,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1608,3,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1608,4,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1610,1,1989,1,"labour","middle","female","4",NA
+1610,2,1989,1,"labour","middle","female","4",NA
+1610,3,1989,1,"labour","middle","female","4",NA
+1610,4,1989,1,"labour","middle","female","4",NA
+1791,1,1989,3,"labour","middle","female","1",NA
+1791,2,1989,3,"Liberal/SDP/Alliance","middle","female","1",NA
+1791,3,1987,3,"labour","middle","female","1",NA
+1791,4,1989,3,"labour","middle","female","1",NA
+3152,1,1989,2,"labour","upper working","female","2",NA
+3152,2,1988,2,"labour","upper working","female","2",NA
+3152,3,1988,2,"labour","upper working","female","2",NA
+3152,4,1988,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3155,1,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+3155,2,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+3155,3,1988,2,"Liberal/SDP/Alliance","middle","female","4",NA
+3155,4,1988,2,"Liberal/SDP/Alliance","middle","female","4",NA
+3156,1,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3156,2,1986,2,"conservative","upper working","female","2",NA
+3156,3,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3156,4,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3163,1,1989,1,"conservative","middle","female","4",NA
+3163,2,1986,1,"conservative","middle","female","4",NA
+3163,3,1985,1,"labour","middle","female","4",NA
+3163,4,1986,1,"labour","middle","female","4",NA
+3164,1,1987,2,"labour","middle","female","2",NA
+3164,2,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+3164,3,1989,2,"labour","middle","female","2",NA
+3164,4,1989,3,"labour","middle","female","2",NA
+3171,1,1986,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3171,2,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3171,3,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3171,4,1987,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3174,1,1987,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+3174,2,1989,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+3174,3,1985,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+3174,4,1988,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+3179,1,1987,2,"labour","upper working","female","2",NA
+3179,2,1985,2,"labour","upper working","female","2",NA
+3179,3,1987,2,"labour","upper working","female","2",NA
+3179,4,1985,2,"conservative","upper working","female","2",NA
+3180,1,1986,3,"Liberal/SDP/Alliance","middle","female","2",NA
+3180,2,1984,3,"Liberal/SDP/Alliance","middle","female","2",NA
+3180,3,1985,3,"labour","middle","female","2",NA
+3180,4,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+1681,1,1985,3,"Liberal/SDP/Alliance","middle","female","1",NA
+1681,2,1986,3,"Liberal/SDP/Alliance","middle","female","1",NA
+1681,3,1986,3,"Liberal/SDP/Alliance","middle","female","1",NA
+1681,4,1986,3,"Liberal/SDP/Alliance","middle","female","1",NA
+1682,1,1988,1,"conservative","middle","female","4",NA
+1682,2,1988,3,"conservative","middle","female","4",NA
+1682,3,1989,3,"conservative","middle","female","4",NA
+1682,4,1989,3,"conservative","middle","female","4",NA
+1685,1,1985,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+1685,2,1985,1,"labour","upper working","female","4",NA
+1685,3,1987,1,"labour","upper working","female","4",NA
+1685,4,1985,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1686,1,1989,3,"conservative","upper working","female","4",NA
+1686,2,1988,3,"conservative","upper working","female","4",NA
+1686,3,1989,3,"conservative","upper working","female","4",NA
+1686,4,1988,3,"conservative","upper working","female","4",NA
+1688,1,1987,1,"labour","middle","female","4",NA
+1688,2,1989,1,"Liberal/SDP/Alliance","middle","female","4",NA
+1688,3,1985,1,"labour","middle","female","4",NA
+1688,4,1989,1,"labour","middle","female","4",NA
+1690,1,1984,1,"conservative","middle","female","2",NA
+1690,2,1984,1,"conservative","middle","female","2",NA
+1690,3,1985,3,"conservative","middle","female","2",NA
+1690,4,1984,3,"labour","middle","female","2",NA
+1694,1,1985,1,"labour","upper working","female","2",NA
+1694,2,1985,1,"conservative","upper working","female","2",NA
+1694,3,1985,1,"labour","upper working","female","2",NA
+1694,4,1985,1,"conservative","upper working","female","2",NA
+1697,1,1985,3,"conservative","upper working","female","3",NA
+1697,2,1984,3,"conservative","upper working","female","3",NA
+1697,3,1984,3,"conservative","upper working","female","3",NA
+1697,4,1983,3,"conservative","upper working","female","3",NA
+1741,1,1986,1,"conservative","upper working","female","1",NA
+1741,2,1983,1,"conservative","upper working","female","1",NA
+1741,3,1984,1,"conservative","upper working","female","1",NA
+1741,4,1983,1,"Liberal/SDP/Alliance","upper working","female","1",NA
+1746,1,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1746,2,1985,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1746,3,1988,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1746,4,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1750,1,1989,3,"conservative","middle","female","2",NA
+1750,2,1989,3,"conservative","middle","female","2",NA
+1750,3,1987,3,"conservative","middle","female","2",NA
+1750,4,1986,3,"conservative","middle","female","2",NA
+1754,1,1987,3,"labour","upper working","female","2",NA
+1754,2,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1754,3,1986,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1754,4,1986,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1834,1,1985,1,"conservative","middle","female","3",NA
+1834,2,1984,1,"conservative","middle","female","3",NA
+1834,3,1988,1,"conservative","middle","female","3",NA
+1834,4,1988,1,"conservative","middle","female","3",NA
+1836,1,1986,3,"labour","middle","female","2",NA
+1836,2,1985,2,"labour","middle","female","2",NA
+1836,3,1986,3,"labour","middle","female","2",NA
+1836,4,1987,3,"labour","middle","female","2",NA
+1838,1,1989,5,"Liberal/SDP/Alliance","upper working","female","4",NA
+1838,2,1987,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1838,3,1989,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1838,4,1989,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+1839,1,1986,1,"conservative","upper working","female","3",NA
+1839,2,1988,1,"conservative","upper working","female","3",NA
+1839,3,1989,1,"conservative","upper working","female","3",NA
+1839,4,1985,1,"conservative","upper working","female","3",NA
+1843,1,1986,2,"labour","middle","female","4",NA
+1843,2,1985,2,"labour","middle","female","4",NA
+1843,3,1988,2,"labour","middle","female","4",NA
+1843,4,1986,2,"labour","middle","female","4",NA
+1846,1,1985,3,"conservative","middle","female","4",NA
+1846,2,1985,3,"conservative","middle","female","4",NA
+1846,3,1985,3,"conservative","middle","female","4",NA
+1846,4,1985,3,"conservative","middle","female","4",NA
+1851,1,1989,2,"conservative","upper working","female","4",NA
+1851,2,1989,2,"conservative","upper working","female","4",NA
+1851,3,1989,2,"conservative","upper working","female","4",NA
+1851,4,1989,2,"conservative","upper working","female","4",NA
+1858,1,1985,5,"labour","upper working","female","3",NA
+1858,2,1985,2,"labour","upper working","female","3",NA
+1858,3,1985,4,"labour","upper working","female","3",NA
+1858,4,1985,2,"labour","upper working","female","3",NA
+1892,1,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+1892,2,1985,1,"Liberal/SDP/Alliance","middle","female","2",NA
+1892,3,1985,3,"Liberal/SDP/Alliance","middle","female","2",NA
+1892,4,1989,3,"labour","middle","female","2",NA
+1895,1,1985,3,"labour","upper working","female","2",NA
+1895,2,1985,3,"labour","upper working","female","2",NA
+1895,3,1985,3,"labour","upper working","female","2",NA
+1895,4,1986,3,"labour","upper working","female","2",NA
+1900,1,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+1900,2,1989,5,"Liberal/SDP/Alliance","middle","female","2",NA
+1900,3,1988,3,"Liberal/SDP/Alliance","middle","female","2",NA
+1900,4,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+1906,1,1987,1,"conservative","upper working","female","2",NA
+1906,2,1985,1,"conservative","upper working","female","2",NA
+1906,3,1986,1,"conservative","upper working","female","2",NA
+1906,4,1986,1,"conservative","upper working","female","2",NA
+1907,1,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1907,2,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1907,3,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+1907,4,1988,2,"labour","middle","female","4",NA
+1910,1,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+1910,2,1984,1,"labour","middle","female","2",NA
+1910,3,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+1910,4,1988,1,"labour","middle","female","2",NA
+1916,1,1985,1,"Liberal/SDP/Alliance","middle","female","3",NA
+1916,2,1985,1,"conservative","middle","female","3",NA
+1916,3,1985,1,"Liberal/SDP/Alliance","middle","female","3",NA
+1916,4,1985,3,"Liberal/SDP/Alliance","middle","female","3",NA
+1954,1,1985,1,"conservative","upper working","female","2",NA
+1954,2,1989,1,"conservative","upper working","female","2",NA
+1954,3,1986,1,"conservative","upper working","female","2",NA
+1954,4,1987,1,"conservative","upper working","female","2",NA
+1955,1,1988,3,"labour","middle","female","3",NA
+1955,2,1988,5,"labour","middle","female","3",NA
+1955,3,1988,3,"labour","middle","female","3",NA
+1955,4,1988,3,"labour","middle","female","3",NA
+1967,1,1986,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1967,2,1988,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1967,3,1988,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+1967,4,1987,2,"labour","upper working","female","2",NA
+1968,1,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1968,2,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1968,3,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+1968,4,1989,3,"labour","upper working","female","2",NA
+1975,1,1989,3,"conservative","middle","female","2",NA
+1975,2,1989,3,"conservative","middle","female","2",NA
+1975,3,1989,3,"conservative","middle","female","2",NA
+1975,4,1989,3,"conservative","middle","female","2",NA
+1979,1,1986,2,"Liberal/SDP/Alliance","middle","female","1",NA
+1979,2,1985,2,"Liberal/SDP/Alliance","middle","female","1",NA
+1979,3,1986,2,"Liberal/SDP/Alliance","middle","female","1",NA
+1979,4,1985,2,"Liberal/SDP/Alliance","middle","female","1",NA
+2019,1,1986,1,"labour","upper working","female","2",NA
+2019,2,1985,1,"labour","upper working","female","2",NA
+2019,3,1984,1,"labour","upper working","female","2",NA
+2019,4,1988,2,"labour","upper working","female","2",NA
+2020,1,1989,1,"conservative","upper working","female","4",NA
+2020,2,1989,1,"labour","upper working","female","4",NA
+2020,3,1989,1,"labour","upper working","female","4",NA
+2020,4,1989,1,"labour","upper working","female","4",NA
+2031,1,1989,1,"conservative","upper working","female","2",NA
+2031,2,1985,1,"conservative","upper working","female","2",NA
+2031,3,1985,3,"conservative","upper working","female","2",NA
+2031,4,1988,1,"conservative","upper working","female","2",NA
+2032,1,1989,1,"conservative","upper working","female","4",NA
+2032,2,1989,1,"labour","upper working","female","4",NA
+2032,3,1989,1,"conservative","upper working","female","4",NA
+2032,4,1989,1,"conservative","upper working","female","4",NA
+2101,1,1986,1,"labour","middle","female","2",NA
+2101,2,1986,1,"labour","middle","female","2",NA
+2101,3,1985,1,"conservative","middle","female","2",NA
+2101,4,1988,1,"labour","middle","female","2",NA
+2106,1,1989,1,"conservative","middle","female","4",NA
+2106,2,1989,1,"conservative","middle","female","4",NA
+2106,3,1989,1,"conservative","middle","female","4",NA
+2106,4,1989,1,"conservative","middle","female","4",NA
+2117,1,1988,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2117,2,1986,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2117,3,1988,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2117,4,1988,3,"labour","middle","female","2",NA
+2121,1,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2121,2,1986,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2121,3,1986,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2121,4,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2128,1,1989,1,"labour","upper working","female","4",NA
+2128,2,1989,1,"labour","upper working","female","4",NA
+2128,3,1989,1,"labour","upper working","female","4",NA
+2128,4,1989,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+2202,1,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2202,2,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2202,3,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2202,4,1989,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2211,1,1985,1,"labour","upper working","female","3",NA
+2211,2,1985,1,"Liberal/SDP/Alliance","upper working","female","3",NA
+2211,3,1985,1,"Liberal/SDP/Alliance","upper working","female","3",NA
+2211,4,1988,1,"Liberal/SDP/Alliance","upper working","female","3",NA
+2212,1,1987,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2212,2,1988,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2212,3,1989,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2212,4,1988,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2214,1,1987,5,"labour","upper working","female","2",NA
+2214,2,1986,4,"labour","upper working","female","2",NA
+2214,3,1985,4,"labour","upper working","female","2",NA
+2214,4,1988,4,"Liberal/SDP/Alliance","upper working","female","2",NA
+2216,1,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+2216,2,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+2216,3,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+2216,4,1987,2,"Liberal/SDP/Alliance","middle","female","4",NA
+2220,1,1989,2,"labour","middle","female","4",NA
+2220,2,1985,2,"labour","middle","female","4",NA
+2220,3,1989,2,"Liberal/SDP/Alliance","middle","female","4",NA
+2220,4,1989,2,"labour","middle","female","4",NA
+2251,1,1987,2,"conservative","upper working","female","3",NA
+2251,2,1985,2,"labour","upper working","female","3",NA
+2251,3,1985,2,"labour","upper working","female","3",NA
+2251,4,1985,2,"conservative","upper working","female","3",NA
+2254,1,1985,3,"labour","upper working","female","2",NA
+2254,2,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2254,3,1985,3,"labour","upper working","female","2",NA
+2254,4,1986,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2255,1,1985,1,"conservative","upper working","female","2",NA
+2255,2,1984,1,"conservative","upper working","female","2",NA
+2255,3,1986,1,"conservative","upper working","female","2",NA
+2255,4,1985,3,"conservative","upper working","female","2",NA
+2256,1,1989,2,"conservative","middle","female","4",NA
+2256,2,1988,2,"conservative","middle","female","4",NA
+2256,3,1989,2,"conservative","middle","female","4",NA
+2256,4,1989,2,"conservative","middle","female","4",NA
+2258,1,1988,1,"labour","upper working","female","2",NA
+2258,2,1985,1,"labour","upper working","female","2",NA
+2258,3,1988,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2258,4,1988,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2263,1,1988,1,"labour","upper working","female","2",NA
+2263,2,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2263,3,1986,1,"labour","upper working","female","2",NA
+2263,4,1987,1,"conservative","upper working","female","2",NA
+2268,1,1985,1,"Liberal/SDP/Alliance","middle","female","3",NA
+2268,2,1984,1,"Liberal/SDP/Alliance","middle","female","3",NA
+2268,3,1987,1,"labour","middle","female","3",NA
+2268,4,1988,1,"Liberal/SDP/Alliance","middle","female","3",NA
+2271,1,1989,3,"conservative","upper working","female","3",NA
+2271,2,1988,3,"conservative","upper working","female","3",NA
+2271,3,1989,3,"conservative","upper working","female","3",NA
+2271,4,1988,3,"conservative","upper working","female","3",NA
+2315,1,1984,1,"labour","upper working","female","2",NA
+2315,2,1985,1,"labour","upper working","female","2",NA
+2315,3,1985,1,"labour","upper working","female","2",NA
+2315,4,1985,1,"labour","upper working","female","2",NA
+2340,1,1986,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2340,2,1987,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+2340,3,1985,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+2340,4,1984,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+2374,1,1986,1,"conservative","upper working","female","2",NA
+2374,2,1985,1,"conservative","upper working","female","2",NA
+2374,3,1985,3,"labour","upper working","female","2",NA
+2374,4,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2379,1,1985,3,"labour","upper working","female","2",NA
+2379,2,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2379,3,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2379,4,1985,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+2383,1,1988,1,"conservative","middle","female","4",NA
+2383,2,1988,1,"conservative","middle","female","4",NA
+2383,3,1988,1,"labour","middle","female","4",NA
+2383,4,1989,1,"conservative","middle","female","4",NA
+2387,1,1987,2,"labour","upper working","female","2",NA
+2387,2,1987,2,"labour","upper working","female","2",NA
+2387,3,1985,2,"conservative","upper working","female","2",NA
+2387,4,1987,2,"conservative","upper working","female","2",NA
+2461,1,1986,3,"labour","upper working","female","2",NA
+2461,2,1984,3,"conservative","upper working","female","2",NA
+2461,3,1985,3,"conservative","upper working","female","2",NA
+2461,4,1987,3,"conservative","upper working","female","2",NA
+2464,1,1986,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2464,2,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2464,3,1985,1,"labour","upper working","female","2",NA
+2464,4,1985,1,"labour","upper working","female","2",NA
+2465,1,1987,1,"conservative","middle","female","2",NA
+2465,2,1986,1,"conservative","middle","female","2",NA
+2465,3,1989,1,"conservative","middle","female","2",NA
+2465,4,1989,1,"conservative","middle","female","2",NA
+2468,1,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2468,2,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2468,3,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2468,4,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2472,1,1986,3,"labour","upper working","female","4",NA
+2472,2,1985,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+2472,3,1985,3,"conservative","upper working","female","4",NA
+2472,4,1985,3,"conservative","upper working","female","4",NA
+2474,1,1983,1,"conservative","middle","female","4",NA
+2474,2,1983,1,"Liberal/SDP/Alliance","middle","female","4",NA
+2474,3,1983,1,"Liberal/SDP/Alliance","middle","female","4",NA
+2474,4,1983,1,"labour","middle","female","4",NA
+2480,1,1989,5,"Liberal/SDP/Alliance","middle","female","2",NA
+2480,2,1989,5,"Liberal/SDP/Alliance","middle","female","2",NA
+2480,3,1989,4,"labour","middle","female","2",NA
+2480,4,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2485,1,1985,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2485,2,1984,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2485,3,1989,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2485,4,1985,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2488,1,1985,1,"labour","upper working","female","2",NA
+2488,2,1985,1,"labour","upper working","female","2",NA
+2488,3,1986,1,"labour","upper working","female","2",NA
+2488,4,1986,1,"labour","upper working","female","2",NA
+2489,1,1985,1,"conservative","upper working","female","4",NA
+2489,2,1989,1,"conservative","upper working","female","4",NA
+2489,3,1989,1,"conservative","upper working","female","4",NA
+2489,4,1988,1,"conservative","upper working","female","4",NA
+2521,1,1985,2,"Liberal/SDP/Alliance","middle","female","3",NA
+2521,2,1985,2,"Liberal/SDP/Alliance","middle","female","3",NA
+2521,3,1983,2,"Liberal/SDP/Alliance","middle","female","3",NA
+2521,4,1986,2,"Liberal/SDP/Alliance","middle","female","3",NA
+2524,1,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2524,2,1988,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2524,3,1988,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2524,4,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2526,1,1989,1,"conservative","upper working","female","2",NA
+2526,2,1989,1,"conservative","upper working","female","2",NA
+2526,3,1989,1,"labour","upper working","female","2",NA
+2526,4,1989,1,"labour","upper working","female","2",NA
+2530,1,1987,1,"labour","middle","female","2",NA
+2530,2,1985,1,"labour","middle","female","2",NA
+2530,3,1986,1,"labour","middle","female","2",NA
+2530,4,1987,1,"conservative","middle","female","2",NA
+2534,1,1989,5,"Liberal/SDP/Alliance","middle","female","4",NA
+2534,2,1984,4,"Liberal/SDP/Alliance","middle","female","4",NA
+2534,3,1985,4,"Liberal/SDP/Alliance","middle","female","4",NA
+2534,4,1989,4,"Liberal/SDP/Alliance","middle","female","4",NA
+2537,1,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2537,2,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2537,3,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2537,4,1985,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+2541,1,1986,1,"labour","upper working","female","2",NA
+2541,2,1985,1,"conservative","upper working","female","2",NA
+2541,3,1989,1,"labour","upper working","female","2",NA
+2541,4,1987,3,"labour","upper working","female","2",NA
+2542,1,1989,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+2542,2,1987,3,"labour","upper working","female","4",NA
+2542,3,1988,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+2542,4,1988,3,"conservative","upper working","female","4",NA
+2614,1,1989,1,"conservative","middle","female","2",NA
+2614,2,1989,1,"conservative","middle","female","2",NA
+2614,3,1989,1,"conservative","middle","female","2",NA
+2614,4,1989,1,"conservative","middle","female","2",NA
+2627,1,1989,5,"conservative","upper working","female","4",NA
+2627,2,1989,4,"conservative","upper working","female","4",NA
+2627,3,1989,4,"conservative","upper working","female","4",NA
+2627,4,1989,4,"conservative","upper working","female","4",NA
+2639,1,1989,1,"conservative","middle","female","3",NA
+2639,2,1986,1,"conservative","middle","female","3",NA
+2639,3,1988,1,"conservative","middle","female","3",NA
+2639,4,1988,1,"conservative","middle","female","3",NA
+2640,1,1985,1,"conservative","upper working","female","3",NA
+2640,2,1989,3,"conservative","upper working","female","3",NA
+2640,3,1989,1,"conservative","upper working","female","3",NA
+2640,4,1989,1,"conservative","upper working","female","3",NA
+2672,1,1988,1,"labour","middle","female","2",NA
+2672,2,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2672,3,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2672,4,1985,1,"Liberal/SDP/Alliance","middle","female","2",NA
+2679,1,1988,1,"conservative","upper working","female","2",NA
+2679,2,1989,1,"conservative","upper working","female","2",NA
+2679,3,1987,1,"conservative","upper working","female","2",NA
+2679,4,1988,1,"conservative","upper working","female","2",NA
+2694,1,1989,1,"conservative","middle","female","2",NA
+2694,2,1989,1,"conservative","middle","female","2",NA
+2694,3,1989,1,"conservative","middle","female","2",NA
+2694,4,1989,1,"conservative","middle","female","2",NA
+2698,1,1987,1,"labour","upper working","female","2",NA
+2698,2,1989,1,"labour","upper working","female","2",NA
+2698,3,1989,1,"labour","upper working","female","2",NA
+2698,4,1988,1,"labour","upper working","female","2",NA
+2700,1,1989,1,"conservative","middle","female","4",NA
+2700,2,1988,1,"conservative","middle","female","4",NA
+2700,3,1989,1,"conservative","middle","female","4",NA
+2700,4,1989,1,"conservative","middle","female","4",NA
+2770,1,1984,1,"conservative","middle","female","3",NA
+2770,2,1984,1,"conservative","middle","female","3",NA
+2770,3,1984,1,"conservative","middle","female","3",NA
+2770,4,1984,3,"conservative","middle","female","3",NA
+2780,1,1988,1,"conservative","upper working","female","4",NA
+2780,2,1986,1,"conservative","upper working","female","4",NA
+2780,3,1987,1,"conservative","upper working","female","4",NA
+2780,4,1987,1,"conservative","upper working","female","4",NA
+2832,1,1988,3,"conservative","upper working","female","3",NA
+2832,2,1985,3,"conservative","upper working","female","3",NA
+2832,3,1986,3,"conservative","upper working","female","3",NA
+2832,4,1986,3,"conservative","upper working","female","3",NA
+2834,1,1989,4,"Liberal/SDP/Alliance","upper working","female","4",NA
+2834,2,1986,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+2834,3,1986,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2834,4,1988,2,"Liberal/SDP/Alliance","upper working","female","4",NA
+2836,1,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2836,2,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2836,3,1988,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2836,4,1988,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2837,1,1989,1,"conservative","upper working","female","3",NA
+2837,2,1989,1,"conservative","upper working","female","3",NA
+2837,3,1988,1,"conservative","upper working","female","3",NA
+2837,4,1989,1,"conservative","upper working","female","3",NA
+2849,1,1989,2,"labour","upper working","female","2",NA
+2849,2,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2849,3,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2849,4,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+2888,1,1989,3,"conservative","middle","female","4",NA
+2888,2,1989,3,"conservative","middle","female","4",NA
+2888,3,1989,3,"conservative","middle","female","4",NA
+2888,4,1989,3,"conservative","middle","female","4",NA
+2890,1,1989,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2890,2,1987,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2890,3,1985,3,"labour","middle","female","2",NA
+2890,4,1988,3,"Liberal/SDP/Alliance","middle","female","2",NA
+2892,1,1989,1,"labour","upper working","female","4",NA
+2892,2,1989,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+2892,3,1988,1,"labour","upper working","female","4",NA
+2892,4,1989,1,"labour","upper working","female","4",NA
+2904,1,1989,3,"conservative","middle","female","4",NA
+2904,2,1989,3,"labour","middle","female","4",NA
+2904,3,1989,3,"conservative","middle","female","4",NA
+2904,4,1989,3,"labour","middle","female","4",NA
+2909,1,1987,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2909,2,1986,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2909,3,1982,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+2909,4,1988,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+3020,1,1985,1,"conservative","middle","female","2",NA
+3020,2,1987,1,"conservative","middle","female","2",NA
+3020,3,1984,3,"Liberal/SDP/Alliance","middle","female","2",NA
+3020,4,1984,3,"conservative","middle","female","2",NA
+3025,1,1987,1,"labour","upper working","female","2",NA
+3025,2,1986,1,"labour","upper working","female","2",NA
+3025,3,1989,1,"conservative","upper working","female","2",NA
+3025,4,1988,1,"conservative","upper working","female","2",NA
+3029,1,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3029,2,1984,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3029,3,1989,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3029,4,1988,1,"Liberal/SDP/Alliance","upper working","female","2",NA
+3100,1,1985,2,"labour","middle","female","4",NA
+3100,2,1986,3,"Liberal/SDP/Alliance","middle","female","4",NA
+3100,3,1986,3,"labour","middle","female","4",NA
+3100,4,1989,2,"labour","middle","female","4",NA
+3111,1,1989,1,"labour","upper working","female","4",NA
+3111,2,1988,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+3111,3,1989,1,"Liberal/SDP/Alliance","upper working","female","4",NA
+3111,4,1989,3,"Liberal/SDP/Alliance","upper working","female","4",NA
+3112,1,1988,1,"conservative","upper working","female","2",NA
+3112,2,1988,1,"conservative","upper working","female","2",NA
+3112,3,1986,1,"conservative","upper working","female","2",NA
+3112,4,1989,1,"conservative","upper working","female","2",NA
+3193,1,1986,1,"labour","middle","female","2",NA
+3193,2,1987,1,"labour","middle","female","2",NA
+3193,3,1988,1,"labour","middle","female","2",NA
+3193,4,1989,1,"labour","middle","female","2",NA
+3194,1,1987,1,"Liberal/SDP/Alliance","middle","female","2",NA
+3194,2,1987,1,"Liberal/SDP/Alliance","middle","female","2",NA
+3194,3,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+3194,4,1989,1,"Liberal/SDP/Alliance","middle","female","2",NA
+3196,1,1985,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3196,2,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3196,3,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3196,4,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3201,1,1984,1,"labour","middle","female","2",NA
+3201,2,1984,1,"labour","middle","female","2",NA
+3201,3,1984,1,"labour","middle","female","2",NA
+3201,4,1985,1,"labour","middle","female","2",NA
+3256,1,1987,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+3256,2,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3256,3,1989,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3256,4,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3257,1,1987,3,"Liberal/SDP/Alliance","upper working","female","2",NA
+3257,2,1986,2,"labour","upper working","female","2",NA
+3257,3,1986,2,"conservative","upper working","female","2",NA
+3257,4,1987,2,"Liberal/SDP/Alliance","upper working","female","2",NA
+3260,1,1987,2,"Liberal/SDP/Alliance","middle","female","2",NA
+3260,2,1984,2,"Liberal/SDP/Alliance","middle","female","2",NA
+3260,3,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+3260,4,1989,2,"Liberal/SDP/Alliance","middle","female","2",NA
+3265,1,1985,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+3265,2,1986,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+3265,3,1986,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+3265,4,1988,2,"Liberal/SDP/Alliance","upper working","female","1",NA
+3268,1,1985,3,"Liberal/SDP/Alliance","middle","female","3",NA
+3268,2,1985,1,"Liberal/SDP/Alliance","middle","female","3",NA
+3268,3,1987,3,"labour","middle","female","3",NA
+3268,4,1989,1,"Liberal/SDP/Alliance","middle","female","3",NA

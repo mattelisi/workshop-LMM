@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Linear mixed-effects models (LMM)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Matteo Lisi" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <link href="libs/animate.css/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding/datatables.js"></script>
+    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
+    <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+    <script src="libs/crosstalk/js/crosstalk.min.js"></script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom/style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: title-slide, center, inverse
+
+# Linear mixed-effects models (LMM)
+
+# (Part 1)
+
+## Matteo Lisi
+
+###  
+
+
+
+
+
+---
+class: inverse
+
+# Linear mixed-effects model
+
+- Also referred to as multilevel or hierarchical models. The key idea is that these models have multiple levels or _random_ variation.
+--
+
+
+- Useful when our data is clustered in _"observational units"_: e.g. when we have multiple observations per participant (longitudinal &amp; within-subjects designs)
+--
+
+
+- We can have multiple nested observational units (e.g. child, class, school)
+--
+
+
+- These observational units are typically random samples from a larger population on which we would like to make inferences.
+
+---
+
+### Example 1: `sleepstudy`
+
+`sleepstudy` is a dataset in the `lme4` package, with reaction times data from 18 subjects that were restricted to 3 hours of sleep for 10 days.
+
+
+```r
+library(lme4)                         # load package 'lme4' in memory
+data('sleepstudy', package= 'lme4')   # load dataset 'sleepstudy' in memory
+head(sleepstudy)                      # shows first few rows of dataset
+```
+
+```
+##   Reaction Days Subject
+## 1 249.5600    0     308
+## 2 258.7047    1     308
+## 3 250.8006    2     308
+## 4 321.4398    3     308
+## 5 356.8519    4     308
+## 6 414.6901    5     308
+```
+
+--
+
+```r
+str(sleepstudy)
+```
+
+```
+## 'data.frame':	180 obs. of  3 variables:
+##  $ Reaction: num  250 259 251 321 357 ...
+##  $ Days    : num  0 1 2 3 4 5 6 7 8 9 ...
+##  $ Subject : Factor w/ 18 levels "308","309","310",..: 1 1 1 1 1 1 1 1 1 1 ...
+```
+
+
+---
+
+### Example 1: `sleepstudy`
+
+`sleepstudy` is a dataset in the `lme4` package, with reaction times data from 18 subjects that were restricted to 3 hours of sleep for 10 days.
+
+<div id="htmlwidget-deab5d3b9ade346c0adc" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-deab5d3b9ade346c0adc">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180"],[249.56,258.7047,250.8006,321.4398,356.8519,414.6901,382.2038,290.1486,430.5853,466.3535,222.7339,205.2658,202.9778,204.707,207.7161,215.9618,213.6303,217.7272,224.2957,237.3142,199.0539,194.3322,234.32,232.8416,229.3074,220.4579,235.4208,255.7511,261.0125,247.5153,321.5426,300.4002,283.8565,285.133,285.7973,297.5855,280.2396,318.2613,305.3495,354.0487,287.6079,285,301.8206,320.1153,316.2773,293.3187,290.075,334.8177,293.7469,371.5811,234.8606,242.8118,272.9613,309.7688,317.4629,309.9976,454.1619,346.8311,330.3003,253.8644,283.8424,289.555,276.7693,299.8097,297.171,338.1665,332.0265,348.8399,333.36,362.0428,265.4731,276.2012,243.3647,254.6723,279.0244,284.1912,305.5248,331.5229,335.7469,377.299,241.6083,273.9472,254.4907,270.8021,251.4519,254.6362,245.4523,235.311,235.7541,237.2466,312.3666,313.8058,291.6112,346.1222,365.7324,391.8385,404.2601,416.6923,455.8643,458.9167,236.1032,230.3167,238.9256,254.922,250.7103,269.7744,281.5648,308.102,336.2806,351.6451,256.2968,243.4543,256.2046,255.5271,268.9165,329.7247,379.4445,362.9184,394.4872,389.0527,250.5265,300.0576,269.8939,280.5891,271.8274,304.6336,287.7466,266.5955,321.5418,347.5655,221.6771,298.1939,326.8785,346.8555,348.7402,352.8287,354.4266,360.4326,375.6406,388.5417,271.9235,268.4369,257.2424,277.6566,314.8222,317.2135,298.1353,348.1229,340.28,366.5131,225.264,234.5235,238.9008,240.473,267.5373,344.1937,281.1481,347.5855,365.163,372.2288,269.8804,272.4428,277.8989,281.7895,279.1705,284.512,259.2658,304.6306,350.7807,369.4692,269.4117,273.474,297.5968,310.6316,287.1726,329.6076,334.4818,343.2199,369.1417,364.1236],[0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9],["308","308","308","308","308","308","308","308","308","308","309","309","309","309","309","309","309","309","309","309","310","310","310","310","310","310","310","310","310","310","330","330","330","330","330","330","330","330","330","330","331","331","331","331","331","331","331","331","331","331","332","332","332","332","332","332","332","332","332","332","333","333","333","333","333","333","333","333","333","333","334","334","334","334","334","334","334","334","334","334","335","335","335","335","335","335","335","335","335","335","337","337","337","337","337","337","337","337","337","337","349","349","349","349","349","349","349","349","349","349","350","350","350","350","350","350","350","350","350","350","351","351","351","351","351","351","351","351","351","351","352","352","352","352","352","352","352","352","352","352","369","369","369","369","369","369","369","369","369","369","370","370","370","370","370","370","370","370","370","370","371","371","371","371","371","371","371","371","371","371","372","372","372","372","372","372","372","372","372","372"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Reaction<\/th>\n      <th>Days<\/th>\n      <th>Subject<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":8,"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[8,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+
+```r
+ggplot(sleepstudy, aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_line(size=0.4)+
+  geom_point()+
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")
+```
+
+![](LMM_part1_files/figure-html/sleep1-1.svg)&lt;!-- --&gt;
+
+
+---
+class: inverse
+
+Possible approaches to modelling these data:
+
+- **Complete pooling**: fit a single line for the combined dataset, ignoring it comes from different participants. 
+
+--
+
+- **No pooling**: fit a line for each participant, then do a t-test or calculate confidence interval from these independent individual estimates.
+
+--
+
+- **Partial pooling**: fit a line for each participant whilst taking into account that they come from the same population and thus share some similarities.
+
+---
+class: inverse
+
+### Complete pooling
+
+Simple linear regression
+
+`$$\begin{align} \text{RT}_i &amp; = \beta_{0} + \beta_{1}\, \text{days}_i + \epsilon_i \\
+\epsilon_i &amp;\sim \mathcal{N}(0, \sigma^2)\end{align}$$`
+
+- `\(\beta_0\)` .orange[intercept]
+- `\(\beta_1\)` .orange[slope]
+- `\(\epsilon\)` .orange[residual errors]
+- `\(\sigma^2\)` .orange[variance of residual errors]
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-5-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-6-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-7-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-8-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-9-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+#### Recap linear models
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+### Complete pooling
+
+In R
+
+
+```r
+m.0 &lt;- lm(Reaction ~ Days, data=sleepstudy)
+summary(m.0)
+```
+
+---
+
+#### R formula cheatsheet
+
+`Y` is the dependent variable and `A` and `B` two independent variables (predictors).
+
+| R formula 	| meaning 	| equivalent formulation 	|
+|-----------	|---------	| --------- |
+| `Y~A` | `\(\hat Y = \beta_0 + \beta_1A\)`  |  `Y~1+A` |
+| `Y~0+A` | `\(\hat Y = \beta_1A\)` &lt;br /&gt; (no intercept)  |  `Y~A-1` |
+| `Y~A+B` | `\(\hat Y = \beta_0 + \beta_1A + \beta_2B\)` &lt;br /&gt; (only main effects)  |  `Y~1+A+B` |
+| `Y~A*B` | `\(\hat Y = \beta_0 + \beta_1A + \beta_2B + \underbrace{\beta_3AB}_{\text{interaction}}\)`  |  `Y~A+B+A:B` |
+| `Y~A+A:B` | `\(\hat Y = \beta_0 + \beta_1A + \underbrace{\beta_2AB}_{\text{interaction}}\)` &lt;br /&gt; (excluded main effect of `B`)  |  `Y~A*B-A` |
+| `Y~A+I(A^2)` | `\(\hat Y = \beta_0 + \beta_1A + \beta_2A^2\)` &lt;br /&gt; (polynomial model) |  |
+---
+
+### Complete pooling
+
+In R
+
+
+```r
+m.0 &lt;- lm(Reaction ~ Days, data=sleepstudy)
+summary(m.0)
+```
+
+```
+## 
+## Call:
+## lm(formula = Reaction ~ Days, data = sleepstudy)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -110.848  -27.483    1.546   26.142  139.953 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  251.405      6.610  38.033  &lt; 2e-16 ***
+## Days          10.467      1.238   8.454 9.89e-15 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 47.71 on 178 degrees of freedom
+## Multiple R-squared:  0.2865,	Adjusted R-squared:  0.2825 
+## F-statistic: 71.46 on 1 and 178 DF,  p-value: 9.894e-15
+```
+
+
+---
+
+### Complete pooling
+
+
+![](LMM_part1_files/figure-html/unnamed-chunk-13-1.svg)&lt;!-- --&gt;
+
+
+---
+
+Problems with complete pooling
+
+![](LMM_part1_files/figure-html/unnamed-chunk-14-1.svg)&lt;!-- --&gt;
+
+---
+
+Problems with complete pooling
+
+![](LMM_part1_files/figure-html/unnamed-chunk-15-1.svg)&lt;!-- --&gt;
+
+--
+
+An example of [Simpson's paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox) - usually indicates that a lurking third variable influences both the predictor and the dependent variable.
+
+
+---
+
+### No pooling
+
+--
+
+
+![](LMM_part1_files/figure-html/unnamed-chunk-16-1.svg)&lt;!-- --&gt;
+
+
+---
+class: inverse
+
+### No-pooling approach
+
+Individual regression for each participant `\(j\)`
+
+`$$\begin{align} \text{RT}_i &amp; = \beta_{0,j} + \beta_{1,j}\, \text{days}_i + \epsilon_i \\
+\epsilon_i &amp;\sim \mathcal{N}(0, \sigma_{j}^2)\end{align}$$`
+
+
+- `\(\beta_{0,j}\)` .orange[intercept of _j_-th participant]
+- `\(\beta_{1,j}\)` .orange[slope of _j_-th participant]
+
+
+
+---
+class: inverse
+
+### No pooling
+
+
+Two-steps approach to make inference about population:
+--
+
+1. Fit individual regression
+--
+
+
+2. Run statistical tests on individual parameters (e.g. t-test on individual slope estimates)
+
+
+---
+class: inverse
+
+### No pooling: limitations
+
+
+Step 2 assumes individual comes from the same statistical population (thus have some similarity). 
+--
+
+
+Step 1, however, treat individuals as independent, assumes that nothing learned about any one individual can informs estimates for other individuals. 
+
+--
+
+_No-pooling approach is sub-optimal when data is unbalanced or in the presence of missing data (e.g. longitudinal design in which due to attrition we have only 1 datapoint for some participants)._
+
+---
+
+### Partial pooling
+
+--
+
+
+![](LMM_part1_files/figure-html/unnamed-chunk-17-1.svg)&lt;!-- --&gt;
+
+
+---
+count: false
+### Partial pooling
+
+
+![](LMM_part1_files/figure-html/unnamed-chunk-18-1.svg)&lt;!-- --&gt;
+
+(Imbalanced data, randomly deleted data points)
+
+---
+count: false
+### Partial pooling
+
+
+![](LMM_part1_files/figure-html/unnamed-chunk-19-1.svg)&lt;!-- --&gt;
+
+(Imbalanced data, randomly deleted data points)
+
+
+---
+count: false
+### Partial pooling
+
+
+![](LMM_part1_files/figure-html/unnamed-chunk-20-1.svg)&lt;!-- --&gt;
+
+(Imbalanced data, randomly deleted data points)
+
+
+
+---
+
+### Partial pooling
+
+- Multilevel model provide more accurate estimates and predictions than the no-pooling approach.
+
+&lt;table class="table" style="font-size: 13px; margin-left: auto; margin-right: auto;"&gt;
+&lt;caption style="font-size: initial !important;"&gt;Out-of-sample prediction error.&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; pooling &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pred.R.squared &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; RMSE &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; MSE &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; no &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -0.93 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.37 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3524.95 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; partial (LMM) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.22 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 37.72 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1423.07 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+--
+
+
+- Particularly useful for imbalanced datasets (participant-specific standard error is taken into account in group-level estimates).
+
+--
+
+
+- Other benefits are:
+
+--
+
+  - Avoid averaging (thus we can include predictors that vary at multiple levels: trials, participants, etc.). 
+
+--
+  
+  - Can save the day when we have only few observations per participant (e.g. children/patient research, special populations). 
+  
+--
+
+  - Avoid having the need to set arbitrary rules to deal with possible outliers.
+  
+
+
+
+---
+class: inverse
+
+### Partial pooling
+
+Estimate jointly parameters of individual participants and of population
+
+`$$\begin{align} \text{RT}_i &amp; = \underbrace{\beta_0 + u_{0[j]}}_{\text{intercept} j\text{-th participant} } + \underbrace{(\beta_1 + u_{1[j]})}_{\text{slope} j\text{-th participant} } \text{Days}_i + \epsilon_i \\
+\epsilon_i &amp;\sim \mathcal{N}(0, \sigma^2)\\
+\{ u_{0[j]} , u_{1[j]} \}  &amp; \sim \mathcal{N}(0, \Omega )
+\end{align}$$`
+
+--
+
+- `\(\beta_0\)`, `\(\beta_1\)` .orange[average&lt;sup&gt;1&lt;/sup&gt; intercept and slope (_Fixed_ effects).]
+- `\(u_{0[j]}\)`, `\(u_{1[j]}\)` .orange[: deviation of _j_-th participant's intercept and slope from average (_Random_&lt;sup&gt;2&lt;/sup&gt; effects).]
+- `\(\mathcal{N}(0, \Omega)\)` .orange[multivariate normal distribution with means {0,0} and 2x2 variance-covariance matrix Ω.]
+
+
+.footnote[.orange[[1]] More precisely, the (estimated) average of the population
+.orange[[2]] Random-effects are participant-specific deviation in the value of one parameter (intercept, slope) from the average value. They are assumed to have a multi-variate normal distribution.]
+
+
+---
+
+#### Variance-covariance matrix
+
+
+`$$\Omega = \left[ \begin{array}{cc} \sigma_{\mu_0}^2 &amp; \rho \,\sigma_{\mu_0}\sigma_{\mu_1} \\ \rho\sigma_{\mu_0}\sigma_{\mu_1} &amp; \sigma_{\mu_1}^2 \end{array} \right]$$`
+where `\((\rho \,\sigma_{\mu_0}\sigma_{\mu_1})\)` is the covariance between individual (subject-specific) deviations, `\(\mu_0\)` and `\(\mu_1\)`, from the population-estimates of intercept and slope. ( `\(\rho\)` is just the Pearson correlation coefficient.)
+
+
+
+
+--
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-22-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+### Shrinkage
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-23-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Shrinkage
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-24-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+### Shrinkage (complete dataset)
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-25-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Is shrinkage "good"?
+
+- Shrinkage of individual estimates toward group mean reveals that multilevel models implement a trade off between **simplicity** (complete-pooling) and **fidelity** to the data (no-pooling approach).
+--
+
+
+- Shrinkage _reduces_ fidelity to the data in the sense that overall it slightly increases the residual errors at the level of observations (e.g. single trials).
+--
+
+
+- The trade-off is set in a statistically-principled way: more uncertain individual estimates (e.g. based on fewer observations) are shrunk more toward the population mean. 
+--
+
+
+- At the same time, shrinkage improves parameter estimates at the level of participants: estimates obtained from partial pooling are _on average_ closer to their (unknown) true values than those obtained with no pooling (see [Stein's paradox](https://en.wikipedia.org/wiki/Stein%27s_example)). 
+--
+
+
+- One way to think about this is in term of **bias-variance trade-off**: partial pooling improve the estimates by decreasing their variance, at the cost of introducing a little bit of bias. 
+
+
+
+---
+
+Running the LMM in R
+
+
+```r
+mm.0 &lt;- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+```
+
+--
+
+(equivalent to: `Reaction ~ 1 + Days + ( 1+ Days | Subject)`)
+
+
+---
+## R formula notation for multilevel models
+
+Model with both 'random' (i.e., subject-specific) intercept and slopes
+
+```r
+lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+```
+
+
+--
+
+Model with "uncorrelated" random effects (that is, the covariance between subject-specific intercept and slopes is not estimated and instead is assumed to be zero)
+
+```r
+lmer(Reaction ~ Days + (1 | Subject) + (0 + Days | Subject), data=sleepstudy)
+```
+
+
+
+--
+
+Model with only random intercept
+
+```r
+lmer(Reaction ~ Days + (1 | Subject), data=sleepstudy)
+```
+
+
+
+
+--
+
+Model with crossed random effects
+
+```r
+lmer(Response ~ Condition + (Condition | Subject) + (1|Word), data)
+```
+
+
+
+
+---
+
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  251.405      6.825  36.838
+## Days          10.467      1.546   6.771
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+
+---
+count: false
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+*## Linear mixed model fit by REML ['lmerMod']
+*## Formula: Reaction ~ Days + (Days | Subject)
+*##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  251.405      6.825  36.838
+## Days          10.467      1.546   6.771
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+
+---
+count: false
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+*## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  251.405      6.825  36.838
+## Days          10.467      1.546   6.771
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+
+---
+count: false
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+*## Scaled residuals: 
+*##     Min      1Q  Median      3Q     Max 
+*## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  251.405      6.825  36.838
+## Days          10.467      1.546   6.771
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+---
+count: false
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+*## Random effects:
+*##  Groups   Name        Variance Std.Dev. Corr
+*##  Subject  (Intercept) 612.10   24.741       
+*##           Days         35.07    5.922   0.07
+*##  Residual             654.94   25.592       
+*## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  251.405      6.825  36.838
+## Days          10.467      1.546   6.771
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+
+---
+count: false
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+*## Fixed effects:
+*##             Estimate Std. Error t value
+*## (Intercept)  251.405      6.825  36.838
+*## Days          10.467      1.546   6.771
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+---
+count: false
+Output
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  251.405      6.825  36.838
+## Days          10.467      1.546   6.771
+## 
+*## Correlation of Fixed Effects:
+*##      (Intr)
+*## Days -0.138
+```
+
+
+
+---
+
+## Where are the _p_-values?
+
+Methods for testing hypotheses, ranked from best to worst:
+1. parametric bootstrap confidence intervals
+2. `\(F\)` tests with methods for approximating degrees of freedom (Satterthwaite, Kenward-Roger)
+3. likelihood ratio tests
+4. Wald `\(Z\)` tests
+
+
+---
+
+#### 1. parametric bootstrap confidence intervals
+
+
+```r
+CI_fixef &lt;- confint(mm.0, method="boot", nsim=250, oldNames=F)
+# number of bootstrap iterations (nsim) should generally be &gt;=1000
+print(CI_fixef, digits=2)
+```
+
+```
+##                               2.5 % 97.5 %
+## sd_(Intercept)|Subject         9.56  38.44
+## cor_Days.(Intercept)|Subject  -0.52   0.88
+## sd_Days|Subject                3.43   8.06
+## sigma                         22.38  28.81
+## (Intercept)                  239.94 265.53
+## Days                           7.17  13.35
+```
+
+
+---
+
+#### 2. `\(F\)` tests with methods for approximating degrees of freedom: `lmerTest` library
+
+
+```r
+library(lmerTest)
+mm.0 &lt;- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+```
+
+---
+count: false
+
+#### 2. `\(F\)` tests with methods for approximating degrees of freedom: `lmerTest` library
+
+
+```r
+summary(mm.0)
+```
+
+```
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: Reaction ~ Days + (Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error      df t value Pr(&gt;|t|)    
+*## (Intercept)  251.405      6.825  17.000  36.838  &lt; 2e-16 ***
+*## Days          10.467      1.546  17.000   6.771 3.26e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138
+```
+
+---
+
+#### 3. likelihood ratio tests
+
+&gt; If `\(L_1\)` and `\(L_2\)` are the maximised likelihoods of two nested models with `\(k_1 &lt; k_2\)` parameters, the test statistic `\(2\log \left(\frac{L_2}{L_1}\right)\)` is asymptotically distributed as `\(\chi^2\)` with `\(k_2 − k_1\)` degrees of freedom ([Wilks' theorem](https://en.wikipedia.org/wiki/Wilks%27_theorem)).
+
+
+--
+
+Can be used also to test random effects
+
+???
+The null hypothesis here is that the difference in log-likelihood is due to chance alone or, similarly, that the additional parameters in the full model do not improve predictive ability above and beyond what could be expected by chance alone.
+
+---
+count: false
+
+#### 3. likelihood ratio tests
+
+Example: we want to test whether the covariance of random effects is different from zero (_are people with faster reaction times at baseline less affected by sleep deprivation?_)
+
+
+```r
+mm.full &lt;- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy, REML=FALSE)
+
+# refit the model forcing the covariance to be zero
+mm.reduced &lt;- lmer(Reaction ~ Days + (0 + Days | Subject) + (1 | Subject), data=sleepstudy, REML=FALSE)
+
+# run likelihood ratio test
+anova(mm.full,mm.reduced)
+```
+
+```
+## Data: sleepstudy
+## Models:
+## mm.reduced: Reaction ~ Days + (0 + Days | Subject) + (1 | Subject)
+## mm.full: Reaction ~ Days + (Days | Subject)
+##            npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)
+## mm.reduced    5 1762.0 1778.0 -876.00   1752.0                     
+## mm.full       6 1763.9 1783.1 -875.97   1751.9 0.0639  1     0.8004
+```
+
+
+---
+
+#### 4. Wald `\(Z\)` tests
+
+Assume that sampling distribution of parameters is multivariate normal, and treat the `t value` in the output (which is the value of the parameter divided by its standard error) as a standard `\(Z\)`-score (i.e. test is significant if `\(Z&gt;2\)`).
+
+--
+
+A similar test can be done also for multiple coefficients (e.g. for a factor with multiple level), Wald `\(\chi^2\)` tests (e.g. `Anova()` function in `car` package), assuming that sampling distribution of log-likelihood is `\(\approx \chi^2\)`.
+
+--
+
+.red[Both assumptions require a leap of faith; not recommended.] 
+
+---
+
+## Diagnostic
+
+As for normal linear model, residuals should be symmetrical and approximately Gaussian
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-42-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+### Example 2: `Machines` dataset
+
+&gt; Data on an experiment to compare three brands of machines used in an industrial process. Six workers were chosen randomly among the employees of a factory to operate each machine three times. The response is an overall productivity score taking into account the number and quality of components produced.
+
+
+```r
+library(MEMSS)
+data(Machines)
+str(Machines)
+```
+
+```
+## 'data.frame':	54 obs. of  3 variables:
+##  $ Worker : Factor w/ 6 levels "1","2","3","4",..: 1 1 1 2 2 2 3 3 3 4 ...
+##  $ Machine: Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ score  : num  52 52.8 53.1 51.8 52.8 53.1 60 60.2 58.4 51.1 ...
+```
+
+---
+
+
+```r
+Machines %&gt;%
+  ggplot(aes(y=Machine, x=score, color=Worker)) +
+  geom_point()
+```
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-44-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+Machines %&gt;%
+  group_by(Worker, Machine) %&gt;%
+  summarise(score_sd =sd(score),
+            score = mean(score)) %&gt;%
+  ggplot(aes(x=Machine, y=score, color=Machine)) +
+  facet_wrap(~Worker, ncol=3)+
+  geom_point() +
+  geom_errorbar(aes(ymin=score-score_sd, ymax=score+score_sd), width=0)
+```
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-45-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+#### Recap linear models: dummy variables
+
+
+&lt;img src="LMM_part1_files/figure-html/unnamed-chunk-46-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+#### Recap linear models: dummy variables
+
+*More than 2 levels*: to represent a categorical factor with `\(k\)` levels we need `\(k-1\)` dummy variables .
+
+|  condition	| `\(D_1\)` 	| `\(D_2\)` |
+|---	|------	|-------|
+| Placebo | 0 | 0 |
+| Drug 1 | 1 | 0 |
+| Drug 2 | 0 | 1 |
+
+--
+
+In R: 
+
+```r
+model &lt;- lm(outcome ~ condition, data = dataset_name)
+```
+
+Formal notation: `$$\text{outcome} = \beta_0 + \beta_1D_1+ \beta_2D_2 + \epsilon$$`
+
+
+---
+
+### Dummy coding in `Machines` dataset
+
+
+```r
+contrasts(Machines$Machine)
+```
+
+```
+##   B C
+## A 0 0
+## B 1 0
+## C 0 1
+```
+
+
+---
+
+
+```r
+machine.mod &lt;- lmer(score ~ Machine + (Machine|Worker), Machines)
+summary(machine.mod)
+```
+
+```
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: score ~ Machine + (Machine | Worker)
+##    Data: Machines
+## 
+## REML criterion at convergence: 208.3
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.39357 -0.51377  0.02694  0.47252  2.53338 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr       
+##  Worker   (Intercept) 16.6392  4.0791              
+##           MachineB    34.5540  5.8783    0.48      
+##           MachineC    13.6170  3.6901   -0.37  0.30
+##  Residual              0.9246  0.9616              
+## Number of obs: 54, groups:  Worker, 6
+## 
+## Fixed effects:
+##             Estimate Std. Error     df t value Pr(&gt;|t|)    
+## (Intercept)   52.356      1.681  5.001  31.152 6.39e-07 ***
+*## MachineB       7.967      2.421  4.999   3.291 0.021708 *  
+*## MachineC      13.917      1.540  4.999   9.036 0.000278 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##          (Intr) MachnB
+## MachineB  0.463       
+## MachineC -0.374  0.301
+```
+
+--
+.red[Both `B` and `C` &gt; `A`. But are they different from each other?]
+
+---
+
+To address this, we change the contrast matrix
+
+
+```r
+levels(Machines$Machine)
+```
+
+```
+## [1] "A" "B" "C"
+```
+
+```r
+contrasts(Machines$Machine) &lt;- contr.treatment(levels(Machines$Machine), base=2)
+contrasts(Machines$Machine)
+```
+
+```
+##   A C
+## A 1 0
+## B 0 0
+## C 0 1
+```
+
+---
+
+Then re-fit the model with the updated contrasts
+
+
+```r
+machine.mod &lt;- lmer(score ~ Machine + (Machine|Worker), Machines)
+summary(machine.mod)
+```
+
+```
+## Linear mixed model fit by REML. t-tests use Satterthwaite's method [
+## lmerModLmerTest]
+## Formula: score ~ Machine + (Machine | Worker)
+##    Data: Machines
+## 
+## REML criterion at convergence: 208.3
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.39351 -0.51374  0.02693  0.47244  2.53334 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr       
+##  Worker   (Intercept) 74.4000  8.6255              
+##           MachineA    34.5479  5.8777   -0.91      
+##           MachineC    35.2960  5.9410   -0.88  0.81
+##  Residual              0.9247  0.9616              
+## Number of obs: 54, groups:  Worker, 6
+## 
+## Fixed effects:
+##             Estimate Std. Error     df t value Pr(&gt;|t|)    
+## (Intercept)   60.322      3.529  5.000  17.095 1.25e-05 ***
+*## MachineA      -7.967      2.421  5.000  -3.291   0.0217 *  
+*## MachineC       5.950      2.447  4.999   2.432   0.0592 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation of Fixed Effects:
+##          (Intr) MachnA
+## MachineA -0.906       
+## MachineC -0.879  0.800
+```
+
+---
+
+We can also use bootstrapping:
+
+
+```r
+print(confint(machine.mod, method="boot", nsim=250, oldNames=F),digits=2)
+```
+
+```
+##                                  2.5 % 97.5 %
+## sd_(Intercept)|Worker             3.71  14.18
+## cor_MachineA.(Intercept)|Worker  -1.00  -0.55
+## cor_MachineC.(Intercept)|Worker  -0.99  -0.42
+## sd_MachineA|Worker                2.60   9.72
+## cor_MachineC.MachineA|Worker      0.12   0.99
+## sd_MachineC|Worker                2.59  10.01
+## sigma                             0.73   1.20
+## (Intercept)                      53.63  67.31
+## MachineA                        -12.88  -3.12
+*## MachineC                          1.05  10.88
+```
+
+
+---
+
+class: inverse
+
+### Summary part 1
+
+--
+
+- Linear multilevel models (LMM) provide a principled way of taking into account hierarchical structure in data.
+--
+
+
+- LMM implements _partial pooling_ of information across observational units in the data, and this provide more accurate estimates and better predictions.
+
+
+
+- LMM provide more flexibility than standard approaches such as repeated-measures ANOVA (e.g. they do not require averaging, can handle naturally nested or crossed random effects and imbalanced dataset). They can replace standard approaches in any situations.
+--
+
+
+
+- LMM can be easily fit in `R` using the `lmer()` function in `lme4` package.
+--
+
+
+- There isn't a single "default" approach for making inferential decisions (pre-registrations of a study using LMM should indicate which approach will be used).
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "solarized-dark",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%",
+"ration": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

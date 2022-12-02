@@ -1,0 +1,429 @@
+---
+title: "LMM workshop - practicals"
+author: "Matteo Lisi"
+output:
+  html_document:
+    toc: true 
+    toc_depth: 1  
+    number_sections: false 
+    theme: united  
+    highlight: tango  
+    css: style_exercises.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# pre-load libraries
+
+```
+
+# Random intercept & random slopes
+
+For this exercise we load again the `sleepstudy` dataset:
+
+```{r}
+library(lme4)
+data("sleepstudy")
+str(sleepstudy)
+```
+
+and fit again the same full model, with both random intercepts and slopes:
+
+```{r}
+model_full <- lmer(Reaction ~ Days + (Days|Subject), data=sleepstudy)
+```
+
+## Questions
+
+(Click on 'solution' buttons below to toggle open the answers to each question.)
+
+#### 1 Fit a model with only random _intercepts_, and compare it to the full model using a likelihood ratio test. What can you conclude from this test?
+
+<div class="toggle"><button>Solution</button>
+
+A model with only random intercepts assumes that individual participants have different "baseline" reaction times but are affected in the same way by sleep deprivation. We can estimate the model with only random intercepts using the code. 
+
+```{r}
+model_rintercept <- lmer(Reaction ~ Days + (1|Subject), data=sleepstudy)
+summary(model_rintercept)
+```
+
+and run the likelihood ratio test using the function `anova()`
+
+```{r}
+anova(model_full, model_rintercept)
+```
+
+The likelihood ratio test is significant, with $\chi^2=42.14$ and $p=7.07 \times 10^{-10}$. This indicates that different participants vary substantially from one another in their individual values of the slope (that is in the effect of sleep deprivation) and that ignoring these differences result in a model that provides a worse fit to the data. (Or , similarly, that including random slopes to the model improve its ability to fit the data more than what you would expect by chance alone.)
+
+</div><br>
+
+#### 2 Fit a model with only random _slopes_, and compare it to the full model using a likelihood ratio test. What can you conclude from this test?
+
+<div class="toggle"><button>Solution</button>
+
+This model would assume that all participants have the same baseline response time, but may be affected differently by sleep deprivation. We can estimate the model with only random slopes using the code:
+
+```{r}
+model_rslope <- lmer(Reaction ~ Days + (0 + Days |Subject), data=sleepstudy)
+summary(model_rslope)
+```
+
+and run the likelihood ratio test using the function `anova()`
+
+```{r}
+anova(model_full, model_rslope)
+```
+
+The likelihood ratio test is significant, with $\chi^2=22.14$ and $p=1.56 \times 10^{-5}$. This indicates that different participants vary substantially from one another in their individual baseline response times.
+
+</div><br>
+
+
+#### 3 Plot the data together with the predictions of the full models and the models with random intercept and random slopes using `ggplot2` (_for more advanced R users_)
+
+<div class="toggle"><button>Solution</button>
+
+First, make sure we have loaded the plotting package
+
+```{r}
+library(ggplot2)
+```
+
+Then, we add colums to the datasets with the predicted values of the model (these can be calculated easily using the `predict()` function).
+
+```{r}
+sleepstudy$full <- predict(model_full)
+sleepstudy$rslope <- predict(model_rslope)
+sleepstudy$rintercept <- predict(model_rintercept)
+```
+
+In order to create a plot with a meaningful legend that identify the different model's predictions, is necessary to reshape the data such that all predictions are in the same column, and we have an additional categorical variable that identify from which model they come frome. This can be done quite easily using the `pivot_longer()` function, in the `tidyr` package that is contained in the `tidyverse` - a collection of packages that aims to simplify data processing.
+
+```{r}
+library(tidyverse)
+data_long <- pivot_longer(sleepstudy,
+                          cols=c("full","rslope","rintercept"), 
+                          values_to="prediction",
+                          names_to="model")
+str(data_long)
+```
+
+We can now create the plot:
+
+```{r,fig.height=4}
+ggplot(data_long, aes(x=Days, y=Reaction))+ # indicate which variables are plotted in x and y axis
+  facet_wrap(~Subject,ncol=9)+ # split the plot in separate facets for each participant
+  geom_point()+ # add data points
+  geom_line(aes(y=prediction, color=model)) # add prediction lines, with different colors for each model
+```
+
+
+</div><br>
+
+___
+
+# Categorical predictors & dummy variable
+
+The dataset `ergoStool` in the `MEMSS` package contains contains data from an ergonomic study in which 9 subjects evaluated the difficulty to adjusting the height of 4 different types of stool chairs. 
+
+```{r}
+data(ergoStool,package="MEMSS")
+str(ergoStool)
+```
+
+
+## Questions
+
+#### 1 Fit this dataset with an appropriate multilevel model. 
+
+<div class="toggle"><button>Solution</button>
+
+The model is estimated using the following command
+
+```{r}
+m <- lmer(effort ~ Type + (1|Subject), ergoStool)
+summary(m)
+```
+
+Note that we use only random intercept and not random slopes. If we try to run a model with also random slopes we receive an error:
+
+```{r, error=TRUE}
+lmer(effort ~ Type + (Type|Subject), ergoStool)
+```
+
+This error means that we do not have enough information to estimate the full model with random slopes. Since we only have 1 measurement for each subject-chair combination, the model would not be able to disentangle the random effects from the residual random variability. Estimating such model would be possible if we had mode than 1 observations for each subject-chair (e.g. if subject repeatedly evaluated the same chairs at different times).
+
+</div><br>
+
+#### 2 Use the model estimates to identify which seat type requires more effort to adjust, and which it requires less. Find the 2 seats that requires the most effort to adjust and test whether they significantly different from each other.
+
+<div class="toggle"><button>Solution</button>
+
+From the output of the model we can see `T2` is the seat that requires more effort, and the baseline `T1` is the seat that requires less effort, whereas `T2` and `T3` are the two seat that requires greater effort.
+
+```{r}
+print(summary(m)$coefficients, digits=4)
+```
+
+In this model, however, each chair is contrasted with the baseline `T1`, so it doesn't provide information about whether `T2` and `T3` are different from each other. You can double check this by examining the contrast matrix of the factor `Type`, which reveal the underlying dummy variable coding explicitly.
+
+```{r}
+contrasts(ergoStool$Type)
+```
+
+To test whether we `T2` really worse than seat `T3`, we can modify the contrast matrix as follow:
+
+```{r}
+levels(ergoStool$Type) # these are the levels of the Type variable; we want T2 (the second listed) as baseline
+contrasts(ergoStool$Type) <- contr.treatment(levels(ergoStool$Type), base=2)
+```
+
+next we can re-run the model
+
+```{r}
+m <- lmer(effort ~ Type + (1|Subject), ergoStool)
+summary(m)
+```
+
+The $t$ value is quite large (>3) suggesting a significant difference. We could test this with bootstrapping by estimating confidence intervals around the parameters of interest. Note that we could also correct the confidence intervals for multiple comparisons. We have $\binom{4}{2}=6$ possible pair of chairs to compare, so using Bonferroni correction we should use as confidence level $1 - \frac{\alpha}{6}$, where $\alpha$ is our chosen acceptable probability of a Type 1 error (usually $0.05$).
+
+```{r}
+confint(m, parm="TypeT3", method="boot", level = 1 - 0.05/6)
+```
+
+</div><br>
+
+___
+
+# Treatment effects in longitudinal studies 
+
+The `cd4_mod.csv` dataset has measurements of the strength of the immune system (CD4 percentages; these are white blood cells also known as T-helper cells) for a set of HIV-positive children who were not given zinc and who were measured several times over a period of about 2 years. The dataset also includes the ages of the children at baseline.
+
+Load the dataset into R:
+
+```{r}
+cd4 <- read.csv("https://raw.githubusercontent.com/mattelisi/RHUL-stats/main/data/cd4_mod.csv")
+str(cd4)
+```
+
+We will use `CD4PCT` (percentage of CD4 cells) as main dependent variable and `time` as temporal variable (this is the time passed from the visit, expressed in years). `baseage` is the age at baseline and `newpid` is a numerical code that identifies each child. 
+
+## Questions
+
+(Click on 'solution' buttons below to toggle open the answers to each question.)
+
+
+#### 1 Analyse the CD4 percentages as a function of time (regardless of treatment) with a model with both random intercepts and random slopes. Include also the age a baseline as covariate. Use the `lmerTest` library to estimate p-values. What can we conclude from this analysis?
+
+
+<div class="toggle"><button>Solution</button>
+
+Load in the workspace the required libraries
+
+```{r, message=FALSE}
+library(lme4)
+library(lmerTest)
+```
+
+Estimate the model and examine the result
+
+```{r }
+model1 <- lmer(CD4PCT ~ baseage + time + (time |newpid), cd4)
+summary(model1)
+```
+The fixed effect of time is $\beta_{\text{time}}=-2.81$; this is the average slope for time across all children. The standard deviation of the slope across children is $\sigma_{\beta_{\text{time}}}=5.00$ (see `Random effects:` part of the output). The results thus indicate that most children - although not all - have declining CD4 levels during the period examined.
+
+</div><br>
+
+
+#### 2 Create another model including also treatment as predictor. What can be concluded from this analysis?
+
+Note: treatment is currently encoded as 1 and 2 (two integer numbers), so you need to make sure that R knows it is actually a categorical predictor. Moreover, since the treatment can only have effect after it is started, it cannot influence the CD4 percentage as baseline; to account for that formulate the model such that only the slope differs across treatment groups, while the intercept (that is the CD4 percentage a baseline) can be assumed to be similar. 
+
+
+<div class="toggle"><button>Solution</button>
+
+First, tell R that treatment is a categorical predictor using the `factor` function
+
+```{r }
+cd4$treatmnt <- factor(cd4$treatmnt)
+contrasts(cd4$treatmnt) # this reveal how this is encoded as dummy variable
+```
+
+Next, lets formulate the model. Since the intercept should not differ across treatment groups, the treatment should be entered only in interaction with time but not as 'main effect'.
+
+```{r }
+model2 <- lmer(CD4PCT ~ baseage + time + time:treatmnt + (time |newpid), cd4)
+summary(model2)
+```
+
+The positive interaction coefficient `time:treatmnt2` would suggest that children who were given the treatment CD4 levels declined with a slightly lower rate than children who were not given the treatment. However, the test on the interaction coefficient is not significant, thus we cannot reject the null hypothesis that the difference between treatment and control is due to chance.
+
+</div><br>
+
+#### 3 Compare the two models you have created at the previous steps with a likelihood ratio test. 
+
+
+<div class="toggle"><button>Solution</button>
+
+```{r}
+anova(model1, model2)
+```
+
+(Note that the p-value is similar to that of the t-test above).
+
+</div><br>
+
+
+#### 4 Plot the data alongside the fixed-effects predictions of `model2` (advanced R users)
+
+
+<div class="toggle"><button>Solution</button>
+
+In order to plot the predictions, it is in this case simpler to use the `predict` function on a separated, simplified dataframe object. This dataset can have only 2 time points (the min and max of `time`) as this is sufficient to represent a line. Furthermore, we set `baseage` to the average of the children in the study.
+
+```{r}
+pred_df <- expand.grid(time = range(cd4$time, na.rm=T),
+                       treatmnt = unique(cd4$treatmnt),
+                       baseage = mean(cd4$baseage, na.rm=T))
+
+pred_df
+```
+
+Next, we can calculate the predictions. Note the use of the argument `re.form=NA`: it indicates R that we do not want to include random effects when calculating the predictions. (see ` ?predict.merMod` for details on the arguments available)
+
+```{r}
+pred_df$CD4PCT <- predict(model2, re.form=NA, newdata=pred_df)
+pred_df
+```
+
+Now we can use these to include in the plot
+
+```{r,fig.height=4}
+ggplot(cd4, aes(x=time, y=CD4PCT))+ 
+  facet_grid(.~treatmnt)+ 
+  geom_point()+ 
+  geom_line(data=pred_df,size=2,color="blue")
+```
+
+
+*Bonus: use bootstrapping to estimate and plot uncertainty around mean predictions* 
+
+The code below use parametric bootstrapping to estimate a 95% confidence interval around the predicted mean `CD4PCT` value.
+
+```{r}
+bootFUN <- function(model){
+   pred_cd4 <- predict(model, re.form=NA, newdata=pred_df)
+   return(pred_cd4)
+}
+
+boot_res <- bootMer(model2, bootFUN, nsim=250)
+dim(boot_res$t)
+
+pred_df$lower <- apply(boot_res$t, 2, function(x){quantile(x, probs = 0.025)})
+pred_df$upper <- apply(boot_res$t, 2, function(x){quantile(x, probs = 0.975)})
+pred_df$CD4PCT <- predict(model2, re.form=NA, newdata=pred_df)
+
+ggplot(cd4, aes(x=time, y=CD4PCT))+ 
+  facet_grid(.~treatmnt)+ 
+  geom_point()+ 
+  geom_ribbon(data=pred_df,aes(ymin=lower, ymax=upper, fill=treatmnt), alpha=0.5)+
+  geom_line(data=pred_df,size=2,aes(color=treatmnt))
+
+```
+
+
+</div><br>
+
+___
+
+# Multiple predictors & interactions
+
+The `mathachieve` dataset is from the 1982 “High School and Beyond” survey, and containts data from 7185 high-school students from 160 schools. 
+
+```{r}
+mathachieve <- read.csv("https://raw.githubusercontent.com/mattelisi/RHUL-stats/main/data/mathachieve.csv")
+str(mathachieve)
+```
+The response variable variable `mathach` is the student’s score on a math-achievement test; the remaining are possible explanatory variables. In particular note that 
+- `ses`, the adjusted socioeconomic status of the student’s family; 
+- `meanses`, the average socioeconomic status for students in each school; 
+- `size`, the number of students in each school; 
+- `sector`, a factor coded Catholic or Public for the type of student’s school.
+
+The variable `school` is an identification number for the student’s school. Note that `sector` and `meanses` are a school-level variable and hence is identical for all students in the same school.
+
+## Questions
+
+(Click on 'solution' buttons below to toggle open the answers to each question.)
+
+
+#### 1 Fit a model to examine whether match achievement depends on socioeconomic status of students, after controlling for other school-related variables such as `sector`, `size` and `meanses`.
+
+<div class="toggle"><button>Solution</button>
+
+To avoid any warning, it is recommended to standardize the variable `size`, whose values are much larger than the other variables and thus could cause some numerical 
+
+We can then run the following model
+
+```{r}
+math.1 <- lmer(mathach ~ meanses + sector + ses + size+ (ses | school), data=mathachieve)
+summary(math.1)
+```
+
+The results indicate that socioeconomic status of students is associated with the match achievements, even when other factors are taken into account.
+
+</div><br>
+
+#### 2 Add the interaction term `ses:sector` to the model, and evaluate whether it improves the model ability to fit the data using a likelihood ratio test. Interpret the results and calculate the slope for `ses` in catholic and public schools.
+
+<div class="toggle"><button>Solution</button>
+
+We can add the interaction by using:
+
+```{r}
+math.2 <- lmer(mathach ~ meanses + sector + ses + size+ ses:sector + (ses | school), data=mathachieve)
+summary(math.2)
+```
+
+To run the likelihood ratio test use:
+
+```{r}
+anova(math.1, math.2)
+```
+
+This indicates that the interaction term does indeed improve the model. 
+
+Note that the interaction term is significant and positive. One possible way to interpret this would be that this means that the different in achievements that can be explained by `ses` is larger in public schools than in catholic schools. Indeed, the slope for `ses` is the following in Catholic schools:
+
+```{r}
+fixef(math.2)["ses"]
+```
+
+and is the following in the Public schools:
+
+```{r}
+fixef(math.2)["ses"] + fixef(math.2)["sectorPublic:ses"]
+```
+
+Another possible interpretation is that `ses` matter more in the lower end of the range (e.g. from lower to medium `ses`) that in the upper end (e.g. from medium to high `ses`). In fact, the following plot show the distribution of mean `ses` values split by `sector` and we can see that students in catholic schools had, on average, higher `ses`
+
+```{r, fig.height=4, fig.width=4}
+mathachieve %>%
+  group_by(school, sector) %>%
+  summarise(ses = mean(ses)) %>%
+  ggplot(aes(x=sector, y=ses))+
+  geom_violin() 
+```
+
+</div><br>
+
+
+
+<script>
+  $(".toggle").click(function() {
+    $(this).toggleClass("open");
+  });
+</script>

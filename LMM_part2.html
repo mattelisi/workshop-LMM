@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Linear mixed-effects models (LMM)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Matteo Lisi" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <link href="libs/animate.css/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="custom/style.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: title-slide, center, inverse
+
+# Linear mixed-effects models (LMM)
+
+# (Part 2)
+
+## Matteo Lisi
+
+###  
+
+
+
+
+---
+# Topics
+
+- [Estimation methods, ML and REML](#estimation)
+
+- [Parametric bootstrapping](#bootstrap)
+
+- [Power analyses via fake-data simulation](#power)
+
+- [Convergence warnings](#warning)
+
+
+---
+class: inverse
+name: estimation
+
+# Maximum likelihood estimation
+
+- Find parameter values that maximize the .orange[likelihood function], which is the probability of the data under the model (treated as a function of the parameters, keeping the data fixed).
+--
+
+
+- In a normal regression model, this is equivalent to finding parameters that minimize the residual squared errors.
+--
+
+
+- In LMM, the random effects (e.g. participant-specific coefficients) are considered _unobserved_ random variables, and are integrated out - similar to the simple residuals `\(\epsilon_i\)` in normal regression. 
+--
+
+
+- This makes the model likelihood not conditional on the specific instantiations of the random effects (e.g. the participants) and allow to generalize the results to the population. 
+--
+
+---
+class: inverse
+
+# Maximum likelihood estimation
+
+
+- Technically: the probability of the data, conditional to the random effects, is integrated with respect to the marginal density of the random effects 
+`$$L\left(\text{data} \mid \beta,\sigma,\Omega \right) = \int p \left(\text{data} \mid \beta,\sigma, \bf{u}\right) \, p\left(\bf{u} \mid \Omega\right) \, d\bf{u}$$`
+
+--
+
+
+- Once we have estimates of the parameters the random effects are typically _predicted_ in a second-step using an 'empirical Bayes' methodology 
+`$$p({\bf u} \mid \text{data};  \beta, \sigma, \Omega)\,\, \propto  \,\, p \left(\text{data} \mid \beta,\sigma, \bf{u}\right) \, p\left(\bf{u} \mid \Omega\right)$$`
+
+---
+
+# ML vs REML
+
+- The `\(\textsf{R}\)` library `lme4` provides two methods for estimating parameters: .blue[Maximum Likelihood (ML)] and .blue[Restricted Maximum Likelihood (REML)].
+--
+
+
+- .blue[ML] tend to be biased and underestimate the variances (i.e. `\(\Omega\)`) because does not account for the fact that fixed effects need to be estimated when estimating the variance components (similar to maximum likelihood estimator of the sample variance).
+--
+
+
+- .blue[REML] provide less biased variance estimates: conceptually similar to Bessel's correction for sample variance (using `\(n-1\)` instead of `\(n\)` in the denominator when calculating the variance).
+--
+
+
+- REML is particularly useful when the sample size (number of clusters) is small; as the sample size increases the correspondence between ML and REML increases (they are asymptotically equivalent).
+
+
+---
+
+# ML vs REML
+
+
+```r
+m.ML &lt;- lmer(Reaction ~ Days + (Days|Subject), sleepstudy, REML=FALSE)
+m.REML &lt;- lmer(Reaction ~ Days + (Days|Subject), sleepstudy, REML=TRUE)
+```
+--
+
+```r
+VarCorr(m.ML)
+```
+
+```
+##  Groups   Name        Std.Dev. Corr 
+##  Subject  (Intercept) 23.7798       
+##           Days         5.7168  0.081
+##  Residual             25.5919
+```
+
+
+```r
+VarCorr(m.REML)
+```
+
+```
+##  Groups   Name        Std.Dev. Corr 
+##  Subject  (Intercept) 24.7407       
+##           Days         5.9221  0.066
+##  Residual             25.5918
+```
+
+
+---
+name: bootstrap
+# Parametric bootstrapping
+
+- _Bootstrapping_ = random sampling with replacement to estimate the sampling distribution of a statistics.
+--
+
+
+- _Parametric_ bootstrapping: if we have a parametric model appropriate for the data we can simulate samples from the model instead of using the empirical distribution.
+--
+
+
+.red[**Parametric boostrapping procedure**:
+
+1. Fit the model on available data
+2. For `\(1,\ldots,n\)` boostrap iterations
+  1. Simulate new data from the model
+  2. Re-estimate the model on the simulated data 
+  3. Calculate any statistic of interest from the re-fitted model and store its value
+  
+Take all the values of the statistic estimated at each iteration and use it as approximation of the sampling distribution (e.g. to calculate confidence intervals)]
+
+--
+
+**For multilevel models we can simulate also new random-effects (e.g. new participant-specific coefficients) by drawing samples from their multivariate normal distribution**
+
+
+---
+
+# Parametric bootstrapping
+
+In `sleepstudy` example, determine the sampling distribution of the average number of days of sleep deprivation needed to induce a 30% slowing of response times.
+
+Fit the model:
+
+
+```r
+m.REML &lt;- lmer(Reaction ~ Days + (Days|Subject), data=sleepstudy, REML=T)
+```
+
+--
+Write a function that calculate the quantity of interest (that is, `\(0.3 \times \frac{\beta_0}{\beta_1}\)`) from the fitted model:
+
+```r
+my_function &lt;- function(model){
+  th &lt;- (fixef(model)[1]*0.3)/fixef(model)[2]
+  return(unname(th))
+}
+```
+
+--
+
+Using the function:
+
+```r
+my_function(m.REML)
+```
+
+```
+## [1] 7.205452
+```
+
+
+---
+
+# Parametric bootstrapping
+
+
+
+
+The function `bootMer()` make it easy to draw bootstrap samples
+
+
+```r
+boot_res &lt;- bootMer(m.REML, 
+                    FUN=my_function, # the function we just defined
+                    nsim=1000, 
+                    use.u = FALSE,   # setting to simulate random effects
+                    type="parametric")
+```
+
+--
+
+
+```r
+str(boot_res[1:3])
+```
+
+```
+## List of 3
+##  $ t0: num 7.21
+##  $ t : num [1:1000, 1] 7.32 7.49 6.38 7.21 7.2 ...
+##  $ R : int 1000
+```
+
+
+
+---
+# Parametric bootstrapping
+
+Boostrapped sampling distribution of `\(0.3 \times \frac{\beta_0}{\beta_1}\)`
+
+
+
+
+
+```r
+hist(boot_res$t, breaks =20)
+```
+
+![](LMM_part2_files/figure-html/unnamed-chunk-11-1.svg)&lt;!-- --&gt;
+
+---
+# Parametric bootstrapping
+
+
+Calculate confidence interval:
+
+
+```r
+alpha &lt;- 0.05
+c(quantile(boot_res$t, probs = alpha/2), quantile(boot_res$t, probs = 1- alpha/2))
+```
+
+```
+##     2.5%    97.5% 
+## 6.276946 8.382001
+```
+
+--
+
+
+```r
+library(boot)
+boot.ci(boot_res, type=c("perc"))
+```
+
+```
+## BOOTSTRAP CONFIDENCE INTERVAL CALCULATIONS
+## Based on 1000 bootstrap replicates
+## 
+## CALL : 
+## boot.ci(boot.out = boot_res, type = c("perc"))
+## 
+## Intervals : 
+## Level     Percentile     
+## 95%   ( 6.257,  8.392 )  
+## Calculations and Intervals on Original Scale
+```
+
+
+---
+name: power
+# Power analyses via fake-data simulations
+
+--
+
+.center[![:scale 75%](./img/power_simulation.png)]
+
+
+
+
+
+---
+# Power analyses via fake-data simulations
+
+Design a study that has at least 80% power of replicating the observed difference between `MachineC` and `MachineB`
+
+
+```r
+data(Machines)
+contrasts(Machines$Machine) &lt;- contr.treatment(levels(Machines$Machine), base=2)
+machine.mod &lt;- lmer(score ~ Machine + (Machine|Worker), Machines)
+kable(summary(machine.mod)$coefficients, digits=3)
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Estimate &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Std. Error &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; df &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; t value &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Pr(&amp;gt;|t|) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.322 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.529 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 17.095 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.000 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; MachineA &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -7.967 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.421 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.000 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; -3.291 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.022 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; MachineC &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5.950 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.447 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4.999 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.432 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.059 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+## 1) Extract parameters from fitted model object
+
+
+```r
+fit_par &lt;- getME(machine.mod, c("theta","sigma")) 
+fit_par$beta &lt;- fixef(machine.mod)
+fit_par
+```
+
+```
+## $theta
+##          Worker.(Intercept) Worker.MachineA.(Intercept) 
+##                  8.97001904                 -5.56447781 
+## Worker.MachineC.(Intercept)             Worker.MachineA 
+##                 -5.45144097                  2.52963307 
+##    Worker.MachineC.MachineA             Worker.MachineC 
+##                  0.02831974                  2.90731096 
+## 
+## $sigma
+## [1] 0.961597
+## 
+## $beta
+## (Intercept)    MachineA    MachineC 
+##   60.322222   -7.966667    5.950000
+```
+--
+
+.footnote[In `lmer` the variance-covariance matrix of the random-effects is internally parametrized as the vector `theta`, which is the (colum-wise) unpacking of the lower triangular Cholesky factor of the variance-covariance matrix.]
+
+---
+## 2) Simulate new data
+
+
+```r
+sim_d &lt;- expand.grid(Worker = factor(1:6),
+                  Machine = unique(Machines$Machine),
+                  rep = 1:3)
+
+contrasts(sim_d$Machine) &lt;- contr.treatment(levels(sim_d$Machine), base=2)
+
+sim_d$score &lt;- simulate(~ Machine + (Machine|Worker),
+                        nsim=1,
+                        family=gaussian,
+                        newdata = sim_d,
+                        newparams=fit_par,
+                        use.u = FALSE)$sim_1
+
+head(sim_d) # fake/simulated data
+```
+
+```
+##   Worker Machine rep    score
+## 1      1       A   1 50.90008
+## 2      2       A   1 50.33025
+## 3      3       A   1 53.28071
+## 4      4       A   1 47.34485
+## 5      5       A   1 54.79628
+## 6      6       A   1 54.22077
+```
+
+---
+## 2) Simulate new data
+
+It's convenient to wrap the simulation code in one custom function
+
+
+```r
+simulate_data &lt;- function(N, fit_par){
+  
+  sim_d &lt;- expand.grid(Worker = factor(1:N),
+                       Machine = unique(Machines$Machine),
+                       rep = 1:3)
+  
+  contrasts(sim_d$Machine) &lt;- contr.treatment(levels(sim_d$Machine), base=2)
+  
+  sim_d$score &lt;- simulate(~ Machine + (Machine|Worker),
+                          nsim=1,
+                          family=gaussian,
+                          newdata = sim_d,
+                          newparams=fit_par,
+                          use.u = FALSE)$sim_1
+  return(sim_d)
+}
+```
+
+---
+## 3) Test significance
+
+Similarly, we use a function that test significance
+
+
+```r
+test_significance &lt;- function(sim_d){
+  mod &lt;- lmer(score ~ Machine + (Machine|Worker), sim_d)
+  p_value &lt;- summary(mod)$coefficients["MachineC","Pr(&gt;|t|)"]
+  return(p_value)
+}
+```
+
+--
+
+
+```r
+test_significance(sim_d)
+```
+
+```
+## [1] 0.2050927
+```
+
+
+---
+## 4) Repeat...
+
+
+
+
+
+
+```r
+N_sim &lt;- 200
+N_workers &lt;- c(6, 7, 8, 9, 10, 12, 15)
+sim_res &lt;- data.frame() # empty object for storing results
+
+for(w in N_workers){
+  for(i in 1:N_sim){
+    p_val &lt;- test_significance(simulate_data(w, fit_par))
+    sim_res &lt;- rbind(sim_res, data.frame(N=w, p=p_val))
+  }
+}
+
+sim_res$significant &lt;- ifelse(sim_res$p&lt;0.05 ,1 ,0)
+```
+
+
+---
+## 5) Estimate power
+
+
+```r
+sim_res %&gt;%
+  group_by(N) %&gt;%
+  summarise(SE = sqrt((mean(significant) * (1 - mean(significant)))/length(significant)),
+            significant = mean(significant)) %&gt;%
+  ggplot(aes(x=N, y=significant))+
+  geom_line(color="blue")+
+  geom_errorbar(aes(ymin=significant-SE, ymax=significant+SE),width=0,color="blue")+
+  geom_point(color="blue",size=2)+
+  geom_hline(yintercept = 0.8,lty=2)+
+  labs(y="power")
+```
+
+&lt;img src="LMM_part2_files/figure-html/unnamed-chunk-23-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+## Testing a different effect size
+
+Standardized effect size: `\(d = \frac{\mu_1 - \mu_2}{\sigma}\)`
+
+--
+
+For LMM: `\(d = \frac{\beta_{\text{Machine}_C}}{\sqrt{\frac{\sigma^2_{\epsilon}}{3-1} + \sigma^2_{\beta_0} + \frac{1}{2}\sigma^2_{\beta_{\text{Machine}_C}} + \rho \sigma_{\beta_0} \sigma_{\beta_{\text{Machine}_C}}}}\)`
+
+
+---
+class:inverse
+
+.orange[Standardized effect size definition:]
+
+`$$\text{Cohen's }d = \frac{\text{expected mean difference}}{\text{expected variation individual observation}}$$`
+
+--
+
+.orange[The expected variation is calculated by applying rules for summing variances of random variables:]
+
+`$$\begin{align} d &amp; = \frac{\beta_{\text{Machine}_C}}{\sqrt{\underbrace{\frac{\sigma^2_{\epsilon}}{3-1}}_{\text{residual error}} + \underbrace{\frac{1}{2}\sigma^2_{\beta_0} + \frac{1}{2}\left(\sigma^2_{\beta_0}+ \sigma^2_{\beta_{\text{Machine}_C}} + 2 \rho \sigma_{\beta_0} \sigma_{\beta_{\text{Machine}_C}}\right)}_{\text{pooled variance of mean score for Machine}_B \text{ and Machine}_C} }} \\
+&amp; = \frac{\beta_{\text{Machine}_C}}{\sqrt{\frac{\sigma^2_{\epsilon}}{3-1} + \sigma^2_{\beta_0} + \frac{1}{2}\sigma^2_{\beta_{\text{Machine}_C}} + \rho \sigma_{\beta_0} \sigma_{\beta_{\text{Machine}_C}}}} 
+\end{align}$$`
+
+
+
+---
+## Testing a different effect size
+
+Standardized effect size: `\(d = \frac{\mu_1 - \mu_2}{\sigma}\)`
+
+--
+
+For LMM: `\(d = \frac{\beta_{\text{Machine}_C}}{\sqrt{\frac{\sigma^2_{\epsilon}}{3-1} + \sigma^2_{\beta_0} + \frac{1}{2}\sigma^2_{\beta_{\text{Machine}_C}} + \rho \sigma_{\beta_0} \sigma_{\beta_{\text{Machine}_C}}}}\)`
+
+--
+
+
+```r
+Omega &lt;- VarCorr(machine.mod)
+cohen_d &lt;- fixef(machine.mod)["MachineC"] / sqrt(fit_par$sigma^2/(3-1)
+                                           + Omega$Worker["(Intercept)","(Intercept)"] 
+                                           + 0.5*Omega$Worker["MachineC","MachineC"]
+                                           + Omega$Worker["(Intercept)","MachineC"])
+cohen_d
+```
+
+```
+##  MachineC 
+## 0.8651908
+```
+
+
+---
+## Testing a different effect size
+
+
+Say you want to test a medium effect size `\(d = 0.5\)`. 
+--
+
+
+To achieve this we need to change the values of `\(\beta_{\text{Machine}_C}\)` used in the simulations to `\(d \times \sqrt{\frac{\sigma^2_{\epsilon}}{N_{\text{rep}}-1} + \sigma^2_{\beta_0} + \frac{1}{2}\sigma^2_{\beta_{\text{Machine}_C}} + \rho \sigma_{\beta_0} \sigma_{\beta_{\text{Machine}_C}}}\)`
+
+
+--
+In R:
+
+
+```r
+cohen_sigma &lt;- sqrt(fit_par$sigma^2/(3-1)
+                    + Omega$Worker["(Intercept)","(Intercept)"] 
+                    + 0.5*Omega$Worker["MachineC","MachineC"]
+                    + Omega$Worker["(Intercept)","MachineC"])
+new_beta_MachineC &lt;- 0.5 * cohen_sigma
+```
+
+--
+Replace the beta in the parameters used for the simulation:
+
+
+```r
+fit_par$beta["MachineC"] &lt;- new_beta_MachineC
+```
+
+
+---
+## Testing a different effect size: results
+
+
+
+&lt;img src="LMM_part2_files/figure-html/unnamed-chunk-28-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: inverse
+
+- The power simulations so far rest on assumptions about the variability in the data (residual variance, random-effects variance-covariance matrix)
+--
+
+
+- We can vary the values of the variances and covariances parameters to estimate how these influence power. This involve running more simulations using different values to generate the data.
+--
+
+
+- To use `simulate()` we  convert the new variance-covariance matrix in the parameter vector `theta`:
+
+```r
+VarCov2Theta &lt;- function(X, sigma){
+  X &lt;- t(chol(X/sigma^2)) 
+  X_unpacked &lt;- X[lower.tri(X, diag=T)]
+  return(X_unpacked)
+}
+```
+--
+
+
+- For more complex model it may be easier to write a function that simulate the data using directly the variance-covariance matrix to sample random effects (e.g. `mvrnorm()` function in `MASS` package).
+
+
+---
+## Varying assumptions about random effects variability: results
+
+&lt;img src="LMM_part2_files/figure-html/unnamed-chunk-30-1.svg" style="display: block; margin: auto;" /&gt;
+
+.footnote[Colors indicate scaling factor of random effects variances; random effects correlation parameters were kept constant.]
+
+---
+class: inverse
+name: warning
+# Convergence warnings
+
+--
+
+
+```r
+&gt;Warning message:
+In checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,  :
+  Model failed to converge with max|grad| = 0.00389462 (tol = 0.001)
+```
+
+--
+
+- Warning indicates the numerical optimization algorithm can't verify to have found the best set of parameter values (often because the 1 or more of the estimated random effects variances are too close to zero).
+--
+
+
+- Banning other problems in the model, this typically means that there is too little data for the number of free parameters being estimated (another reason for thinking carefully about the data analysis _before_ collecting the data)
+--
+
+
+- Troubleshooting: try centering/scaling continuous predictos, running more iterations (e.g. see [this tutorial](https://rstudio-pubs-static.s3.amazonaws.com/33653_57fc7b8e5d484c909b615d8633c01d51.html)) or a different optimization algorithm (see the [`allFit`](https://www.rdocumentation.org/packages/afex/versions/0.16-1/topics/allFit) function).
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="./custom/macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "solarized-dark",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"slideNumberFormat": "%current%",
+"ration": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

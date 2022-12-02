@@ -1,0 +1,1238 @@
+---
+title: "Linear mixed-effects models (LMM)"
+subtitle: "(Part 1)"
+author: "Matteo Lisi"
+date: " "
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [xaringan-themer.css, custom/style.css]
+    nature:
+      
+      highlightStyle: solarized-dark
+      highlightLines: true
+      countIncrementalSlides: false
+      slideNumberFormat: "%current%"
+      ration: 16:9
+    seal: false
+---
+class: title-slide, center, inverse
+
+# `r rmarkdown::metadata$title`
+
+# `r rmarkdown::metadata$subtitle`
+
+## `r rmarkdown::metadata$author`
+
+### `r rmarkdown::metadata$date`
+
+
+```{r setup, include=FALSE}
+
+# slides & formatting
+options(htmltools.dir.version = FALSE)
+options(crayon.enabled = TRUE)
+
+xaringanExtra::use_xaringan_extra(c("tile_view", "animate_css", "tachyons"))
+
+# css: [rladies-fonts, default, custom/style.css]
+library(xaringanthemer)
+style_solarized_light(colors = c(
+  red = "#f34213",
+  purple = "#3e2f5b",
+  orange = "#ff8811",
+  green = "#136f63",
+  white = "#FFFFFF",
+  blue = " #0000FF"
+))
+
+# R stuff
+library(lme4)
+library(ggplot2)
+nice_theme <- theme_xaringan()+theme(text=element_text(size=9),panel.border=element_blank(),strip.text=element_text(size=rel(0.8)),axis.text=element_text(size=8),panel.grid.minor=element_blank(),axis.line=element_line(size=.4), axis.title=element_text(size=11), legend.title=element_text(size=11))
+theme_set(nice_theme)
+
+background_plot <- nice_theme$plot.background$colour
+knitr::opts_knit$set(global.par = TRUE) # fix par for multiple plots
+
+library(tidyverse)
+library(kableExtra)
+```
+
+
+---
+class: inverse
+
+# Linear mixed-effects model
+
+- Also referred to as multilevel or hierarchical models. The key idea is that these models have multiple levels or _random_ variation.
+--
+
+
+- Useful when our data is clustered in _"observational units"_: e.g. when we have multiple observations per participant (longitudinal & within-subjects designs)
+--
+
+
+- We can have multiple nested observational units (e.g. child, class, school)
+--
+
+
+- These observational units are typically random samples from a larger population on which we would like to make inferences.
+
+---
+
+### Example 1: `sleepstudy`
+
+`sleepstudy` is a dataset in the `lme4` package, with reaction times data from 18 subjects that were restricted to 3 hours of sleep for 10 days.
+
+```{r}
+library(lme4)                         # load package 'lme4' in memory
+data('sleepstudy', package= 'lme4')   # load dataset 'sleepstudy' in memory
+head(sleepstudy)                      # shows first few rows of dataset
+```
+
+--
+```{r}
+str(sleepstudy)
+```
+
+
+---
+
+### Example 1: `sleepstudy`
+
+`sleepstudy` is a dataset in the `lme4` package, with reaction times data from 18 subjects that were restricted to 3 hours of sleep for 10 days.
+
+```{r, echo=F}
+DT::datatable(
+  sleepstudy,
+  fillContainer = FALSE, options = list(pageLength = 8)
+)
+```
+
+
+---
+
+```{r sleep1, fig.height=4, dev='svg', message=F}
+ggplot(sleepstudy, aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_line(size=0.4)+
+  geom_point()+
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")
+```
+
+
+---
+class: inverse
+
+Possible approaches to modelling these data:
+
+- **Complete pooling**: fit a single line for the combined dataset, ignoring it comes from different participants. 
+
+--
+
+- **No pooling**: fit a line for each participant, then do a t-test or calculate confidence interval from these independent individual estimates.
+
+--
+
+- **Partial pooling**: fit a line for each participant whilst taking into account that they come from the same population and thus share some similarities.
+
+---
+class: inverse
+
+### Complete pooling
+
+Simple linear regression
+
+$$\begin{align} \text{RT}_i & = \beta_{0} + \beta_{1}\, \text{days}_i + \epsilon_i \\
+\epsilon_i &\sim \mathcal{N}(0, \sigma^2)\end{align}$$
+
+- $\beta_0$ .orange[intercept]
+- $\beta_1$ .orange[slope]
+- $\epsilon$ .orange[residual errors]
+- $\sigma^2$ .orange[variance of residual errors]
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+set.seed(8)
+N <- 10
+x <- seq(5,50,length.out=N)+rnorm(N,mean=0,sd=0.1)
+y <- 12 + 0.5 * x + rnorm(N, mean=0, sd=6)
+d <- data.frame(x,y)
+rm(x)
+rm(y)
+
+pl_r <- c(-4,53)
+
+m0 <- lm(y~x,d)
+beta <- coef(m0)
+
+par(bg = background_plot)
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.7),xlab="X (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+abline(m0,lwd=2)
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+```
+
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.7),xlab="X (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+abline(m0,lwd=2)
+point_x <- 0
+segments(point_x,-10,point_x,beta[1] + beta[2]*point_x, lwd=2,lty=1, col="blue")
+arrows(point_x,beta[1] + beta[2]*point_x, pl_r[1]-2,beta[1] + beta[2]*point_x, lwd=2,lty=1, col="blue", length=0.12) 
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+text(14,4,bquote("intercept: "~beta[0]~"="~.(round(beta[1],digits=2))),col="blue")
+```
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.7),xlab="X (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+
+abline(v=0,lty=2,lwd=0.5,col="dark grey")
+
+abline(m0,lwd=2)
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+
+abline(a=beta[1]+20,b=beta[2],lwd=2,col="orange")
+text(12,53,bquote(hat(y)~"="~.(round(beta[1]+20,digits=2)) ~"+" ~.(round(beta[2],digits=2))~x),col="orange")
+
+abline(a=beta[1]-8.76,b=beta[2],lwd=2,col="blue")
+text(12,48,bquote(hat(y)~"="~.(round(beta[1]-8.76,digits=2)) ~"+" ~.(round(beta[2],digits=2))~x),col="blue")
+
+segments(0,-10,0,0, lwd=1,lty=3, col="blue")
+segments(-10,0,0,0, lwd=1,lty=3, col="blue")
+```
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.7),xlab="X (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+
+
+abline(m0,lwd=2)
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+
+abline(a=beta[1],b=beta[2]*2,lwd=2,col="orange")
+text(12,53,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2]*2,digits=2))~x),col="orange")
+
+abline(a=beta[1],b=beta[2]*0.5,lwd=2,col="blue")
+text(12,48,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2]*0.5,digits=2))~x),col="blue")
+
+segments(0,-10,0,beta[1], lwd=1,lty=3, col="dark grey")
+segments(-10,beta[1],0,beta[1], lwd=1,lty=3, col="dark grey")
+```
+
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.7),xlab="x (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+abline(m0,lwd=2)
+arrows(d$x,beta[1]+beta[2]*d$x,d$x,d$y,col=rgb(1,0,0,0.9),lwd=2,length=0.05)
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+text(33,beta[1] + beta[2]*33 +4, expression(epsilon),col="red",cex=2)
+```
+
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+draw_squared_error <- function(x,y,beta){
+  pred_y <- beta[1] + beta[2]*x
+  if(pred_y<=y){
+    xleft <- x - abs(pred_y-y)
+    ybottom <- pred_y
+    xright <- x
+    ytop <- y
+  }else{
+    xleft <- x 
+    ybottom <- y
+    xright <- x + abs(pred_y-y)
+    ytop <- pred_y
+  }
+  rect(xleft, ybottom, xright, ytop, density = NA,col = rgb(1,0,0,0.4), border = F)
+}
+
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.7),xlab="x (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+abline(m0,lwd=2)
+for(i in 1:nrow(d)){
+  draw_squared_error(d$x[i],d$y[i],beta)
+}
+arrows(d$x,beta[1]+beta[2]*d$x,d$x,d$y,col=rgb(1,0,0,0.9),lwd=2,length=0.05)
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+#text(33,beta[1] + beta[2]*33 +4, expression(epsilon^2),col="red",cex=2)
+```
+
+---
+
+#### Recap linear models
+
+
+```{r, fig.height=5.3,fig.width=4.8, dev='svg', echo=F, message=F, fig.align='center'}
+plot_vertical_gaussian <- function(x,y,y_span,sigma,x_factor=5,...){
+  N <- 100
+  y_coord <- seq(y-y_span,y+y_span,length.out=N)
+  x_coord <- x - x_factor*dnorm(y_coord-y, mean=0,sd=sigma)
+  lines(c(x_coord[1],x_coord[length(x_coord)]),c(y_coord[1],y_coord[length(y_coord)]),lwd=1,lty=2)
+  arrows(x - x_factor*dnorm(0, mean=0,sd=sigma),y,x,y,length=0.11,...)
+  lines(x_coord,y_coord,...)
+}
+
+sd_residuals <- sqrt(sum(m0$residuals^2)/(nrow(d)-2))
+
+beta <- coef(m0)
+plot(d$x,d$y,pch=19,cex=2,col=rgb(0,0,0,0.3),xlab="x (predictor variable)",ylab="y (dependent variable)",xlim=c(pl_r[1],pl_r[2]),ylim=c(pl_r[1],pl_r[2]))
+abline(m0,lwd=2)
+#arrows(d$x,beta[1]+beta[2]*d$x,d$x,d$y,col=rgb(1,0,0,0.3),lwd=1,length=0.05)
+text(39,-3,bquote(hat(y)~"="~.(round(beta[1],digits=2)) ~"+" ~.(round(beta[2],digits=2))~x))
+
+for(i in seq(8,43,length.out=4)){
+  plot_vertical_gaussian(i,beta[1]+beta[2]*i,y_span=18,sigma=sd_residuals,x_factor=100,col="red",lwd=2)
+}
+
+text(39,4, expression(epsilon %~% italic(N)(0,sigma[epsilon]^2)),col="red")
+
+```
+
+
+
+---
+
+### Complete pooling
+
+In R
+
+```{r, eval=F}
+m.0 <- lm(Reaction ~ Days, data=sleepstudy)
+summary(m.0)
+```
+
+---
+
+#### R formula cheatsheet
+
+`Y` is the dependent variable and `A` and `B` two independent variables (predictors).
+
+| R formula 	| meaning 	| equivalent formulation 	|
+|-----------	|---------	| --------- |
+| `Y~A` | $\hat Y = \beta_0 + \beta_1A$  |  `Y~1+A` |
+| `Y~0+A` | $\hat Y = \beta_1A$ <br /> (no intercept)  |  `Y~A-1` |
+| `Y~A+B` | $\hat Y = \beta_0 + \beta_1A + \beta_2B$ <br /> (only main effects)  |  `Y~1+A+B` |
+| `Y~A*B` | $\hat Y = \beta_0 + \beta_1A + \beta_2B + \underbrace{\beta_3AB}_{\text{interaction}}$  |  `Y~A+B+A:B` |
+| `Y~A+A:B` | $\hat Y = \beta_0 + \beta_1A + \underbrace{\beta_2AB}_{\text{interaction}}$ <br /> (excluded main effect of `B`)  |  `Y~A*B-A` |
+| `Y~A+I(A^2)` | $\hat Y = \beta_0 + \beta_1A + \beta_2A^2$ <br /> (polynomial model) |  |
+---
+
+### Complete pooling
+
+In R
+
+```{r}
+m.0 <- lm(Reaction ~ Days, data=sleepstudy)
+summary(m.0)
+```
+
+
+---
+
+### Complete pooling
+
+
+```{r, fig.height=4, dev='svg', message=F, echo=F}
+sleepstudy$complete <- predict(m.0)
+
+palette_lines <- viridisLite::viridis(3, alpha = 1, begin = 0.15, end = 0.9, direction = -1)
+
+ggplot(sleepstudy, aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_line(aes(y=complete),size=0.8, color=palette_lines[1])+
+  geom_point()+
+  nice_theme+
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")
+```
+
+
+---
+
+Problems with complete pooling
+
+```{r, fig.height=4, dev='svg', message=F, echo=F}
+set.seed(2)
+n <- 12
+n_obs <- 30
+Z <- MASS::mvrnorm(n,mu=c(0,0), Sigma=matrix(c(1,-0.75,-0.75,1),ncol=2))
+beta_1 <- rnorm(n, mean=0.7, sd=0.2)
+sigma_y <- 0.35
+sigma_x <- 0.5
+simd <- expand.grid(obs=1:n_obs, id=1:n)
+simd$x <- NA
+simd$y <- NA
+for(i in unique(simd$id)){
+  simd$x[simd$id==i] <- Z[i,1] + rnorm(n_obs,0,sigma_x)
+  simd$y[simd$id==i] <- Z[i,2] + simd$x[simd$id==i]*beta_1[i] - Z[i,1] + rnorm(n_obs,0,sigma_y)
+}
+simd$id <- paste("sj",simd$id,sep="")
+
+ggplot(simd, aes(x=x, y=y, color=id))+
+  geom_point()+
+  scale_color_manual(values=rep("black",n))+
+  geom_smooth(method="lm",se=F,aes(group=1))
+
+```
+
+---
+
+Problems with complete pooling
+
+```{r, fig.height=4, dev='svg', message=F, echo=F}
+ggplot(simd, aes(x=x, y=y, color=id))+
+  geom_point()+
+  scale_color_viridis_d()+
+  geom_smooth(method="lm",se=F) + 
+  geom_smooth(method="lm",se=F,aes(group=1))
+
+```
+
+--
+
+An example of [Simpson's paradox](https://en.wikipedia.org/wiki/Simpson%27s_paradox) - usually indicates that a lurking third variable influences both the predictor and the dependent variable.
+
+
+---
+
+### No pooling
+
+--
+
+
+```{r, fig.height=4, dev='svg', message=F, echo=F}
+d0 <- sleepstudy
+d0$prediction <- predict(m.0)
+d0$pooling <- "complete"
+
+
+# estimate individual regressions
+m.list <- lmList(Reaction ~ Days | Subject, data=sleepstudy)
+d1 <- sleepstudy
+d1$prediction <- predict(m.list)
+d1$pooling <- "no"
+
+d <- rbind(d0,d1)
+
+
+ggplot(d, aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_line(aes(y=prediction, color=pooling),size=0.8)+
+  scale_color_manual(values=palette_lines[1:2]) +
+  geom_point()+
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")
+```
+
+
+---
+class: inverse
+
+### No-pooling approach
+
+Individual regression for each participant $j$
+
+$$\begin{align} \text{RT}_i & = \beta_{0,j} + \beta_{1,j}\, \text{days}_i + \epsilon_i \\
+\epsilon_i &\sim \mathcal{N}(0, \sigma_{j}^2)\end{align}$$
+
+
+- $\beta_{0,j}$ .orange[intercept of _j_-th participant]
+- $\beta_{1,j}$ .orange[slope of _j_-th participant]
+
+
+
+---
+class: inverse
+
+### No pooling
+
+
+Two-steps approach to make inference about population:
+--
+
+1. Fit individual regression
+--
+
+
+2. Run statistical tests on individual parameters (e.g. t-test on individual slope estimates)
+
+
+---
+class: inverse
+
+### No pooling: limitations
+
+
+Step 2 assumes individual comes from the same statistical population (thus have some similarity). 
+--
+
+
+Step 1, however, treat individuals as independent, assumes that nothing learned about any one individual can informs estimates for other individuals. 
+
+--
+
+_No-pooling approach is sub-optimal when data is unbalanced or in the presence of missing data (e.g. longitudinal design in which due to attrition we have only 1 datapoint for some participants)._
+
+---
+
+### Partial pooling
+
+--
+
+
+```{r, fig.height=4, dev='svg', message=F, echo=F}
+
+m.lmm <- lmer(Reaction ~ Days + (Days|Subject), data=sleepstudy)
+d2 <- sleepstudy
+d2$prediction <- predict(m.lmm)
+d2$pooling <- "partial (LMM)"
+
+d <- rbind(d0,d1, d2)
+
+ggplot(d, aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_line(aes(y=prediction, color=pooling),size=0.8)+
+  scale_color_manual(values=palette_lines) +
+  geom_point()+
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")+
+  scale_y_continuous(limits=c(190,500))
+
+```
+
+
+---
+count: false
+### Partial pooling
+
+
+```{r, fig.height=4, dev='svg', message=F, echo=F, warning=F}
+set.seed(1124)
+
+n_id <- length(unique(sleepstudy$Subject))
+n_obs <- rpois(n_id, lambda=0.9) + 2
+  
+slice_consecutive <- function(x, n) {
+  i_start <- sample(1:(nrow(x)-n), 1)
+  i_end <- (i_start+n-1)
+  return(x[i_start:i_end,])
+}
+  
+sleepstudy %>%
+  group_split(Subject) %>%
+  map2_dfr(n_obs, ~ slice_consecutive(.x, n = .y)) -> d_miss
+
+
+m.lmm.ms <- lmer(Reaction ~ Days + (Days|Subject), data=d_miss)
+m.list.ms <- lmList(Reaction ~ Days | Subject, data=d_miss)
+
+d$prediction_miss <- NA
+d$prediction_miss[d$pooling=="no"] <- predict(m.list.ms, newdata = d[d$pooling=="no",])
+d$prediction_miss[d$pooling=="partial (LMM)"] <- predict(m.lmm.ms, newdata = d[d$pooling=="partial (LMM)",])
+
+
+d %>% 
+  filter(pooling!="complete") %>%
+  ggplot(aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_point(pch=21, color="dark grey",alpha=0.6)+
+  geom_smooth(method="lm",se=F,size=0.4, lty=2,color="dark grey",alpha=0.6) +
+  geom_point(data=d_miss) +
+  geom_line(aes(y=prediction_miss, color=pooling),size=0.8, alpha=0)+
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")+
+  scale_y_continuous(limits=c(190,500))
+```
+
+(Imbalanced data, randomly deleted data points)
+
+---
+count: false
+### Partial pooling
+
+
+```{r, fig.height=4, dev='svg', message=F, echo=F, warning=F}
+d %>% 
+  filter(pooling!="complete") %>%
+  mutate(prediction_miss=ifelse(pooling=="no",prediction_miss,NA)) %>%
+  ggplot(aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_point(pch=21, color="dark grey",alpha=0.6)+
+  geom_smooth(method="lm",se=F,size=0.4, lty=2,color="dark grey",alpha=0.6) +
+  geom_point(data=d_miss) +
+  geom_line(aes(y=prediction_miss, color=pooling),size=0.8)+
+  scale_color_manual(values=palette_lines[2:3]) +
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")+
+  scale_y_continuous(limits=c(190,500))
+```
+
+(Imbalanced data, randomly deleted data points)
+
+
+---
+count: false
+### Partial pooling
+
+
+```{r, fig.height=4, dev='svg', message=F, echo=F, warning=F}
+d %>% 
+  filter(pooling!="complete") %>%
+  ggplot(aes(x=Days,y=Reaction))+
+  facet_wrap(~Subject,ncol=9)+
+  geom_point(pch=21, color="dark grey",alpha=0.6)+
+  geom_smooth(method="lm",se=F,size=0.4, lty=2,color="dark grey",alpha=0.6) +
+  geom_point(data=d_miss) +
+  geom_line(aes(y=prediction_miss, color=pooling),size=0.8)+
+  scale_color_manual(values=palette_lines[2:3]) +
+  scale_x_continuous(breaks=seq(0,10,2))+
+  labs(x="Days of sleep deprivation",y="Mean reaction times [ms]")+
+  scale_y_continuous(limits=c(190,500))
+```
+
+(Imbalanced data, randomly deleted data points)
+
+
+
+---
+
+### Partial pooling
+
+- Multilevel model provide more accurate estimates and predictions than the no-pooling approach.
+
+```{r, message = F, echo=F}
+d %>% 
+  filter(pooling!="complete") %>%
+  anti_join(d_miss, by=c("Reaction", "Subject","Days")) %>% 
+  mutate(sq_err = (prediction_miss - Reaction)^2) %>%
+  group_by(Subject) %>%
+  mutate(sj_mean = mean(Reaction)) %>%
+  ungroup() %>%
+  mutate(tot_sq_error = (sj_mean - Reaction)^2) %>%
+  group_by(pooling) %>%
+  summarise(Pred.R.squared = 1 - sum(sq_err)/sum(tot_sq_error),
+            RMSE = sqrt(mean(sq_err)),
+            MSE = mean(sq_err)) %>%
+  knitr::kable(digits=2, caption="Out-of-sample prediction error.") %>%
+  kable_styling(font_size = 13)
+```
+
+
+--
+
+
+- Particularly useful for imbalanced datasets (participant-specific standard error is taken into account in group-level estimates).
+
+--
+
+
+- Other benefits are:
+
+--
+
+  - Avoid averaging (thus we can include predictors that vary at multiple levels: trials, participants, etc.). 
+
+--
+  
+  - Can save the day when we have only few observations per participant (e.g. children/patient research, special populations). 
+  
+--
+
+  - Avoid having the need to set arbitrary rules to deal with possible outliers.
+  
+
+
+
+---
+class: inverse
+
+### Partial pooling
+
+Estimate jointly parameters of individual participants and of population
+
+$$\begin{align} \text{RT}_i & = \underbrace{\beta_0 + u_{0[j]}}_{\text{intercept} j\text{-th participant} } + \underbrace{(\beta_1 + u_{1[j]})}_{\text{slope} j\text{-th participant} } \text{Days}_i + \epsilon_i \\
+\epsilon_i &\sim \mathcal{N}(0, \sigma^2)\\
+\{ u_{0[j]} , u_{1[j]} \}  & \sim \mathcal{N}(0, \Omega )
+\end{align}$$
+
+--
+
+- $\beta_0$, $\beta_1$ .orange[average<sup>1</sup> intercept and slope (_Fixed_ effects).]
+- $u_{0[j]}$, $u_{1[j]}$ .orange[: deviation of _j_-th participant's intercept and slope from average (_Random_<sup>2</sup> effects).]
+- $\mathcal{N}(0, \Omega)$ .orange[multivariate normal distribution with means {0,0} and 2x2 variance-covariance matrix Ω.]
+
+
+.footnote[.orange[[1]] More precisely, the (estimated) average of the population
+.orange[[2]] Random-effects are participant-specific deviation in the value of one parameter (intercept, slope) from the average value. They are assumed to have a multi-variate normal distribution.]
+
+
+---
+
+#### Variance-covariance matrix
+
+
+$$\Omega = \left[ \begin{array}{cc} \sigma_{\mu_0}^2 & \rho \,\sigma_{\mu_0}\sigma_{\mu_1} \\ \rho\sigma_{\mu_0}\sigma_{\mu_1} & \sigma_{\mu_1}^2 \end{array} \right]$$
+where $(\rho \,\sigma_{\mu_0}\sigma_{\mu_1})$ is the covariance between individual (subject-specific) deviations, $\mu_0$ and $\mu_1$, from the population-estimates of intercept and slope. ( $\rho$ is just the Pearson correlation coefficient.)
+
+
+
+
+--
+
+```{r, fig.height=2.5, fig.width=9, dev='svg', message=F, echo=F, warning=F, fig.align = 'center' }
+
+n_obs <- 250
+rn5 <- MASS::mvrnorm(n_obs,c(0,0), Sigma=matrix(data=c(1,-0.7,-0.7,1),nrow=2))
+r00 <- MASS::mvrnorm(n_obs,c(0,0), Sigma=matrix(data=c(1,0,0,1),nrow=2))
+r03 <- MASS::mvrnorm(n_obs,c(0,0), Sigma=matrix(data=c(1,0.5,0.5,1),nrow=2))
+r07 <- MASS::mvrnorm(n_obs,c(0,0), Sigma=matrix(data=c(1,0.85,0.85,1),nrow=2))
+dat <- data.frame(rbind(rn5, r00, r03, r07))
+dat$correlation <- c(rep("rho==-0.7",n_obs),
+                     rep("rho==0",n_obs),
+                     rep("rho==0.5",n_obs),
+                     rep("rho==0.85",n_obs))
+
+ggplot(dat,aes(x=X1*24.741,y=X2*5.922))+
+  geom_point(alpha=0.8)+
+  facet_grid(.~correlation,labeller = label_parsed)+
+  labs(x=expression(mu[0]), y=expression(mu[1]))
+
+
+```
+
+
+---
+
+
+### Shrinkage
+
+```{r, fig.height=5.5, fig.width=6, dev='svg', message=F, echo=F, warning=F, fig.align = 'center' }
+# analyze shrinking
+m.single <- coef(m.list.ms)
+par.mixed <- as.matrix(ranef(m.lmm.ms)$Subject) + mlisi::repmat(t(as.matrix(fixef(m.lmm.ms))),18,1)
+
+# plot parameters from mixed model and individual fit
+par(lwd=1,mar=(c(3, 3, 2, 2) + 0.1),mgp=c(1.7,0.5,0),bg = background_plot)
+plot(m.single[,1], m.single[,2], xlab="Intercept",ylab="Slope",pch=19,cex.lab=1.2,col="dark grey",
+     xlim=c(140,440),ylim=c(-30,50))
+
+# draw ellipse illustrating covariance of random effects
+#vcov_m.1 <- matrix(as.vector(VarCorr(m.lmm.ms)$Subject),ncol=2)
+#mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.05, col="grey", lty=2)
+#mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.001, col="grey", lty=2)
+#mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.5, col="grey", lty=2)
+
+#points(mean(m.single[,1]), mean(m.single[,2]),pch=19,col="dark grey",cex=2)
+#points(mean(par.mixed[,1]), mean(par.mixed[,2]),pch=21,col="black",cex=2,lwd=2)
+text(m.single[,1], m.single[,2],labels=rownames(m.single),pos=1,cex=0.6)
+#points(par.mixed[,1], par.mixed[,2])
+#arrows(m.single[,1], m.single[,2],par.mixed[,1], par.mixed[,2], length=0.1)
+legend("bottomright",c("single-subject fits","multilevel model"),pch=c(19,21),col=c("dark grey", "black"),bty="n",cex=0.6)
+
+```
+
+
+---
+
+### Shrinkage
+
+```{r, fig.height=5.5, fig.width=6, dev='svg', message=F, echo=F, warning=F, fig.align = 'center'}
+# analyze shrinking
+m.single <- coef(m.list.ms)
+par.mixed <- as.matrix(ranef(m.lmm.ms)$Subject) + mlisi::repmat(t(as.matrix(fixef(m.lmm.ms))),18,1)
+
+# plot parameters from mixed model and individual fit
+par(lwd=1,mar=(c(3, 3, 2, 2) + 0.1),mgp=c(1.7,0.5,0),bg = background_plot)
+plot(m.single[,1], m.single[,2], xlab="Intercept",ylab="Slope",pch=19,cex.lab=1.2,col="dark grey",
+     xlim=c(140,440),ylim=c(-30,50))
+
+# draw ellipse illustrating covariance of random effects
+vcov_m.1 <- matrix(as.vector(VarCorr(m.lmm.ms)$Subject),ncol=2)
+mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.05, col="grey", lty=2)
+mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.001, col="grey", lty=2)
+mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.5, col="grey", lty=2)
+
+#points(mean(m.single[,1]), mean(m.single[,2]),pch=19,col="dark grey",cex=2)
+#points(mean(par.mixed[,1]), mean(par.mixed[,2]),pch=21,col="black",cex=2,lwd=2)
+text(m.single[,1], m.single[,2],labels=rownames(m.single),pos=1,cex=0.6)
+points(par.mixed[,1], par.mixed[,2])
+arrows(m.single[,1], m.single[,2],par.mixed[,1], par.mixed[,2], length=0.1)
+legend("bottomright",c("single-subject fits","multilevel model"),pch=c(19,21),col=c("dark grey", "black"),bty="n",cex=0.6)
+
+```
+
+
+
+---
+
+### Shrinkage (complete dataset)
+
+```{r, fig.height=5.5, fig.width=6, dev='svg', message=F, echo=F, warning=F, fig.align = 'center'}
+# analyze shrinking
+m.single <- coef(m.list)
+par.mixed <- as.matrix(ranef(m.lmm)$Subject) + mlisi::repmat(t(as.matrix(fixef(m.lmm))),18,1)
+
+# plot parameters from mixed model and individual fit
+par(lwd=1,mar=(c(3, 3, 2, 2) + 0.1),mgp=c(1.7,0.5,0),bg = background_plot)
+plot(m.single[,1], m.single[,2], xlab="Intercept",ylab="Slope",pch=19,cex.lab=1.2,col="dark grey",
+     xlim=c(140,440),ylim=c(-30,50))
+
+# draw ellipse illustrating covariance of random effects
+vcov_m.1 <- matrix(as.vector(VarCorr(m.lmm)$Subject),ncol=2)
+mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.05, col="grey", lty=2)
+mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.001, col="grey", lty=2)
+mixtools::ellipse(c(mean(par.mixed[,1]), mean(par.mixed[,2])), sigma=vcov_m.1,alpha=0.5, col="grey", lty=2)
+
+#points(mean(m.single[,1]), mean(m.single[,2]),pch=19,col="dark grey",cex=2)
+#points(mean(par.mixed[,1]), mean(par.mixed[,2]),pch=21,col="black",cex=2,lwd=2)
+text(m.single[,1], m.single[,2],labels=rownames(m.single),pos=1,cex=0.6)
+points(par.mixed[,1], par.mixed[,2])
+arrows(m.single[,1], m.single[,2],par.mixed[,1], par.mixed[,2], length=0.1)
+legend("bottomright",c("single-subject fits","multilevel model"),pch=c(19,21),col=c("dark grey", "black"),bty="n",cex=0.6)
+
+```
+
+
+---
+
+### Is shrinkage "good"?
+
+- Shrinkage of individual estimates toward group mean reveals that multilevel models implement a trade off between **simplicity** (complete-pooling) and **fidelity** to the data (no-pooling approach).
+--
+
+
+- Shrinkage _reduces_ fidelity to the data in the sense that overall it slightly increases the residual errors at the level of observations (e.g. single trials).
+--
+
+
+- The trade-off is set in a statistically-principled way: more uncertain individual estimates (e.g. based on fewer observations) are shrunk more toward the population mean. 
+--
+
+
+- At the same time, shrinkage improves parameter estimates at the level of participants: estimates obtained from partial pooling are _on average_ closer to their (unknown) true values than those obtained with no pooling (see [Stein's paradox](https://en.wikipedia.org/wiki/Stein%27s_example)). 
+--
+
+
+- One way to think about this is in term of **bias-variance trade-off**: partial pooling improve the estimates by decreasing their variance, at the cost of introducing a little bit of bias. 
+
+
+
+---
+
+Running the LMM in R
+
+```{r}
+mm.0 <- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+```
+
+--
+
+(equivalent to: `Reaction ~ 1 + Days + ( 1+ Days | Subject)`)
+
+
+---
+## R formula notation for multilevel models
+
+Model with both 'random' (i.e., subject-specific) intercept and slopes
+```{r, eval=F}
+lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+```
+
+
+--
+
+Model with "uncorrelated" random effects (that is, the covariance between subject-specific intercept and slopes is not estimated and instead is assumed to be zero)
+```{r, eval=F}
+lmer(Reaction ~ Days + (1 | Subject) + (0 + Days | Subject), data=sleepstudy)
+```
+
+
+
+--
+
+Model with only random intercept
+```{r, eval=F}
+lmer(Reaction ~ Days + (1 | Subject), data=sleepstudy)
+```
+
+
+
+
+--
+
+Model with crossed random effects
+```{r, eval=F}
+lmer(Response ~ Condition + (Condition | Subject) + (1|Word), data)
+```
+
+
+
+
+---
+
+Output
+
+```{r }
+summary(mm.0)
+```
+
+
+---
+count: false
+Output
+
+```{r, highlight.output=1:3}
+summary(mm.0)
+```
+
+
+---
+count: false
+Output
+
+```{r, highlight.output=5}
+summary(mm.0)
+```
+
+
+---
+count: false
+Output
+
+```{r, highlight.output=7:9}
+summary(mm.0)
+```
+
+---
+count: false
+Output
+
+```{r, highlight.output=11:16}
+summary(mm.0)
+```
+
+
+---
+count: false
+Output
+
+```{r, highlight.output=18:21}
+summary(mm.0)
+```
+
+---
+count: false
+Output
+
+```{r, highlight.output=23:25}
+summary(mm.0)
+```
+
+
+
+---
+
+## Where are the _p_-values?
+
+Methods for testing hypotheses, ranked from best to worst:
+1. parametric bootstrap confidence intervals
+2. $F$ tests with methods for approximating degrees of freedom (Satterthwaite, Kenward-Roger)
+3. likelihood ratio tests
+4. Wald $Z$ tests
+
+
+---
+
+#### 1. parametric bootstrap confidence intervals
+
+```{r, warning=FALSE, message=FALSE}
+CI_fixef <- confint(mm.0, method="boot", nsim=250, oldNames=F)
+# number of bootstrap iterations (nsim) should generally be >=1000
+print(CI_fixef, digits=2)
+```
+
+
+---
+
+#### 2. $F$ tests with methods for approximating degrees of freedom: `lmerTest` library
+
+```{r , warning=FALSE, message=FALSE}
+library(lmerTest)
+mm.0 <- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy)
+```
+
+---
+count: false
+
+#### 2. $F$ tests with methods for approximating degrees of freedom: `lmerTest` library
+
+```{r , highlight.output=21:22}
+summary(mm.0)
+```
+
+---
+
+#### 3. likelihood ratio tests
+
+> If $L_1$ and $L_2$ are the maximised likelihoods of two nested models with $k_1 < k_2$ parameters, the test statistic $2\log \left(\frac{L_2}{L_1}\right)$ is asymptotically distributed as $\chi^2$ with $k_2 − k_1$ degrees of freedom ([Wilks' theorem](https://en.wikipedia.org/wiki/Wilks%27_theorem)).
+
+
+--
+
+Can be used also to test random effects
+
+???
+The null hypothesis here is that the difference in log-likelihood is due to chance alone or, similarly, that the additional parameters in the full model do not improve predictive ability above and beyond what could be expected by chance alone.
+
+---
+count: false
+
+#### 3. likelihood ratio tests
+
+Example: we want to test whether the covariance of random effects is different from zero (_are people with faster reaction times at baseline less affected by sleep deprivation?_)
+
+```{r}
+mm.full <- lmer(Reaction ~ Days + (Days | Subject), data=sleepstudy, REML=FALSE)
+
+# refit the model forcing the covariance to be zero
+mm.reduced <- lmer(Reaction ~ Days + (0 + Days | Subject) + (1 | Subject), data=sleepstudy, REML=FALSE)
+
+# run likelihood ratio test
+anova(mm.full,mm.reduced)
+```
+
+
+---
+
+#### 4. Wald $Z$ tests
+
+Assume that sampling distribution of parameters is multivariate normal, and treat the `t value` in the output (which is the value of the parameter divided by its standard error) as a standard $Z$-score (i.e. test is significant if $Z>2$).
+
+--
+
+A similar test can be done also for multiple coefficients (e.g. for a factor with multiple level), Wald $\chi^2$ tests (e.g. `Anova()` function in `car` package), assuming that sampling distribution of log-likelihood is $\approx \chi^2$.
+
+--
+
+.red[Both assumptions require a leap of faith; not recommended.] 
+
+---
+
+## Diagnostic
+
+As for normal linear model, residuals should be symmetrical and approximately Gaussian
+
+```{r, echo=F,fig.height=4, dev='svg', fig.width=6, fig.align = 'center'}
+	par(mfrow=c(1,2),bg = background_plot)
+	plot(fitted(mm.0),resid(mm.0), xlab="fitted values", ylab="residuals")
+	abline(h=0,lty=2)
+	qqnorm(resid(mm.0))
+	qqline(resid(mm.0),lty=2)
+	
+```
+
+
+---
+
+### Example 2: `Machines` dataset
+
+> Data on an experiment to compare three brands of machines used in an industrial process. Six workers were chosen randomly among the employees of a factory to operate each machine three times. The response is an overall productivity score taking into account the number and quality of components produced.
+
+```{r, message=F}
+library(MEMSS)
+data(Machines)
+str(Machines)
+```
+
+---
+
+```{r, fig.height=4, fig.width=5, dev='svg', message=F, fig.align='center'}
+Machines %>%
+  ggplot(aes(y=Machine, x=score, color=Worker)) +
+  geom_point()
+```
+
+---
+
+```{r, fig.height=4, fig.width=5, dev='svg', message=F, fig.align='center'}
+Machines %>%
+  group_by(Worker, Machine) %>%
+  summarise(score_sd =sd(score),
+            score = mean(score)) %>%
+  ggplot(aes(x=Machine, y=score, color=Machine)) +
+  facet_wrap(~Worker, ncol=3)+
+  geom_point() +
+  geom_errorbar(aes(ymin=score-score_sd, ymax=score+score_sd), width=0)
+```
+
+
+
+---
+
+#### Recap linear models: dummy variables
+
+
+```{r, fig.height=6, fig.width=6, dev='svg', echo=F, message=F, fig.align='center'}
+# mean UK salary £35,423 
+# gender gap is 15.5% in 2020,
+set.seed(5)
+x <- sort(rep(c(0,1),25))
+y <- 32677.72 + x*5490.56 + rnorm(length(x),0,7000)
+
+d <- data.frame(sex_dummy=x,salary=y,sex=ifelse(x==0,"female","male"))
+
+
+par(mar = c(5, 8, 4, 2) + 0.1,mgp=c(3,0.5,0),bg = background_plot, mfrow=c(1,1))
+set.seed(5)
+plot(jitter(x,factor=0.2),y,xlim=c(-0.5,2),ylim=c(13000,53000),bty="n",xaxt="n", yaxt="n",xlab=" ",ylab="annual salary",lwd=1.4,col="black")
+xtick <- c(0,1)
+axis(side=1, at=xtick, labels = c("D=0\n(female)","D=1\n(male)"),tck=0.02, cex.axis=1.45,mgp=c(3,1.9,0))
+axis(side=2, at=seq(20000,60000,10000), labels = paste("£",seq(20000,60000,10000)/1000,"K",sep=""),tck=0.02,las=1, cex.axis=0.8)
+
+m0 <- lm(y~x)
+beta <- coef(m0)
+abline(m0,lwd=2,col="black")
+lines(x=c(-1.5,1.5),y=rep(mean(y[x==0]),2),lty=2,lwd=2,col="blue")
+lines(x=c(0.5,1.5),y=rep(mean(y[x==1]),2),lty=2,lwd=1,col="dark grey")
+
+points(c(0,1),c(mean(y[x==0]),mean(y[x==1])),cex=1.2,pch=19)
+
+text(1.5,17000,expression(paste(hat(italic(Y)),"= ",phantom(beta[0])," + ",phantom(beta[1]),italic(" D"))),cex=1.5)
+text(1.5,17000,expression(paste(phantom(hat(italic(Y))),phantom("= "),beta[0],phantom(" + "),phantom(beta[1]),phantom(italic(" D")))),col="blue",cex=1.5)
+text(1.5,17000,expression(paste(phantom(hat(italic(Y))),phantom("= "),phantom(beta[0]),phantom(" + "),beta[1],phantom(italic(" D")))),col="red",cex=1.5)
+arrows(x0=1.4,y0=mean(y[x==0]),x1=1.4,y1=mean(y[x==1]),length=0.1,lwd=2,code=3,col="red")
+text(1.46,mean(y),expression(beta[1]),col="red")
+
+text(-0.45,mean(y[x==0])+1000,expression(y=beta[0]),col="blue")
+
+```
+
+
+---
+
+#### Recap linear models: dummy variables
+
+*More than 2 levels*: to represent a categorical factor with $k$ levels we need $k-1$ dummy variables .
+
+|  condition	| $D_1$ 	| $D_2$ |
+|---	|------	|-------|
+| Placebo | 0 | 0 |
+| Drug 1 | 1 | 0 |
+| Drug 2 | 0 | 1 |
+
+--
+
+In R: 
+```{r, eval=F}
+model <- lm(outcome ~ condition, data = dataset_name)
+```
+
+Formal notation: $$\text{outcome} = \beta_0 + \beta_1D_1+ \beta_2D_2 + \epsilon$$
+
+
+---
+
+### Dummy coding in `Machines` dataset
+
+```{r}
+contrasts(Machines$Machine)
+```
+
+
+---
+
+```{r, highlight.output=23:24}
+machine.mod <- lmer(score ~ Machine + (Machine|Worker), Machines)
+summary(machine.mod)
+```
+
+--
+.red[Both `B` and `C` > `A`. But are they different from each other?]
+
+---
+
+To address this, we change the contrast matrix
+
+```{r}
+levels(Machines$Machine)
+contrasts(Machines$Machine) <- contr.treatment(levels(Machines$Machine), base=2)
+contrasts(Machines$Machine)
+```
+
+---
+
+Then re-fit the model with the updated contrasts
+
+```{r, highlight.output=23:24}
+machine.mod <- lmer(score ~ Machine + (Machine|Worker), Machines)
+summary(machine.mod)
+```
+
+---
+
+We can also use bootstrapping:
+
+```{r, warning=FALSE, message=FALSE, highlight.output=11}
+print(confint(machine.mod, method="boot", nsim=250, oldNames=F),digits=2)
+```
+
+
+---
+
+class: inverse
+
+### Summary part 1
+
+--
+
+- Linear multilevel models (LMM) provide a principled way of taking into account hierarchical structure in data.
+--
+
+
+- LMM implements _partial pooling_ of information across observational units in the data, and this provide more accurate estimates and better predictions.
+
+
+
+- LMM provide more flexibility than standard approaches such as repeated-measures ANOVA (e.g. they do not require averaging, can handle naturally nested or crossed random effects and imbalanced dataset). They can replace standard approaches in any situations.
+--
+
+
+
+- LMM can be easily fit in `R` using the `lmer()` function in `lme4` package.
+--
+
+
+- There isn't a single "default" approach for making inferential decisions (pre-registrations of a study using LMM should indicate which approach will be used).
+
+
+
+

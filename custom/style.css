@@ -1,0 +1,25 @@
+.remark-slide-content {
+    font-size: 20px;
+    padding: 0.5em 2em 0.5em 2em;
+}
+
+/*.inverse {
+  background-color: #272822;
+  color: #d6d6d6;
+  text-shadow: 0 0 20px #333;
+}
+*/
+
+
+/*h1, h2, h3 {
+  font-family: 'Arial';
+  font-weight: light;
+}
+
+body { font-family: 'Arial'; }
+
+.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+font-size: 15px;}
+*/
+
+.remark-code { font-size: 15px;}

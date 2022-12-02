@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="173.39253mm"
+   height="50.050865mm"
+   viewBox="0 0 173.39253 50.050865"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (1:1.2.1+202207142221+cd75a1ee6d)"
+   sodipodi:docname="power_simulation.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1.2938725"
+     inkscape:cx="222.58762"
+     inkscape:cy="300.64787"
+     inkscape:window-width="2113"
+     inkscape:window-height="1475"
+     inkscape:window-x="1363"
+     inkscape:window-y="589"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     showguides="true" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="RoundedArrow"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="RoundedArrow"
+       markerWidth="6.1347523"
+       markerHeight="5.9304953"
+       viewBox="0 0 6.1347524 5.9304951"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="m -0.21114562,-4.1055728 6.42229122,3.21114561 a 1,1 90 0 1 0,1.78885438 L -0.21114562,4.1055728 A 1.236068,1.236068 31.717474 0 1 -2,3 v -6 a 1.236068,1.236068 148.28253 0 1 1.78885438,-1.1055728 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="path1367" />
+    </marker>
+    <rect
+       x="323.45953"
+       y="333.97986"
+       width="170.04021"
+       height="49.03141"
+       id="rect298" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-17.973476,-72.477287)">
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text296"
+       style="font-size:18.6667px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;white-space:pre;shape-inside:url(#rect298)" />
+    <ellipse
+       style="fill:none;stroke-width:0.470165;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1.41049, 1.41049"
+       id="path474"
+       ry="17.881176"
+       rx="26.688677"
+       cy="161.08717"
+       cx="64.1931" />
+    <g
+       id="g2628"
+       transform="translate(12.193735,-28.546105)">
+      <rect
+         style="fill:#d45500;fill-opacity:0.436569;stroke:none;stroke-width:0.765;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect2341"
+         width="83.606094"
+         height="21.17662"
+         x="95.566185"
+         y="116.07984"
+         ry="4.0186238" />
+      <g
+         id="g2322">
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.264583"
+           x="16.069042"
+           y="118.79549"
+           id="text236"><tspan
+             sodipodi:role="line"
+             id="tspan234"
+             style="stroke-width:0.264583"
+             x="16.069042"
+             y="118.79549">simulate data sets</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;stroke-width:0.264583"
+           x="16.175152"
+           y="130.51364"
+           id="text240"><tspan
+             sodipodi:role="line"
+             id="tspan238"
+             style="text-align:start;text-anchor:start;stroke-width:0.264583"
+             x="16.175152"
+             y="130.51364">fit model on </tspan><tspan
+             sodipodi:role="line"
+             style="text-align:start;text-anchor:start;stroke-width:0.264583"
+             x="16.175152"
+             y="136.68727"
+             id="tspan294">simulated data</tspan><tspan
+             sodipodi:role="line"
+             style="text-align:start;text-anchor:start;stroke-width:0.264583"
+             x="16.175152"
+             y="142.86089"
+             id="tspan242">&amp; test for significance</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.264583"
+           x="8.3744593"
+           y="118.43837"
+           id="text1670"><tspan
+             sodipodi:role="line"
+             id="tspan1668"
+             style="stroke-width:0.264583"
+             x="8.3744593"
+             y="118.43837">1)</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.264583"
+           x="8.7631083"
+           y="131.06798"
+           id="text1674"><tspan
+             sodipodi:role="line"
+             id="tspan1672"
+             style="stroke-width:0.264583"
+             x="8.7631083"
+             y="131.06798">2)</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial Bold';stroke-width:0.264583"
+           x="8.5239763"
+           y="110.45766"
+           id="text1678"><tspan
+             sodipodi:role="line"
+             id="tspan1676"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold';stroke-width:0.264583"
+             x="8.5239763"
+             y="110.45766">REPEAT:</tspan></text>
+        <rect
+           style="fill:none;stroke:#d45500;stroke-width:0.470001;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           id="rect1857"
+           width="68.221931"
+           height="49.580864"
+           x="6.0147419"
+           y="101.25839"
+           ry="4.0186238" />
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.264583"
+         x="98.111885"
+         y="128.59642"
+         id="text304"><tspan
+           sodipodi:role="line"
+           id="tspan302"
+           style="stroke-width:0.264583"
+           x="98.111885"
+           y="128.59642"><tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Arial;-inkscape-font-specification:'Arial Bold'"
+   id="tspan2339">power</tspan> = </tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.264583"
+         x="122.43275"
+         y="123.91874"
+         id="text308"><tspan
+           sodipodi:role="line"
+           id="tspan306"
+           style="stroke-width:0.264583"
+           x="122.43275"
+           y="123.91874">significant simulations </tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:4.9389px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;stroke-width:0.264583"
+         x="131.02521"
+         y="131.71669"
+         id="text312"><tspan
+           sodipodi:role="line"
+           id="tspan310"
+           style="stroke-width:0.264583"
+           x="131.02521"
+           y="131.71669">all simulations</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 118.40231,126.71935 h 56.25133"
+         id="path1976" />
+      <path
+         style="fill:none;stroke:#d45500;stroke-width:0.765;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#RoundedArrow)"
+         d="M 74.41687,126.04882 H 90.797896"
+         id="path2003" />
+    </g>
+  </g>
+</svg>
