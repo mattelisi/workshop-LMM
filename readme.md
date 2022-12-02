@@ -2,7 +2,7 @@
 
 This is an introductory 2 hours course on linear multilevel models using R and the `lme4` library.
 
-See the slides online here (mlisi.xyz/RHUL-stats/workshops.html)[https://mlisi.xyz/RHUL-stats/workshops.html].
+See the slides online here [mlisi.xyz/RHUL-stats/workshops.html](https://mlisi.xyz/RHUL-stats/workshops.html).
 
 The folder `exercises` contains some worked examples and exercises.
 
